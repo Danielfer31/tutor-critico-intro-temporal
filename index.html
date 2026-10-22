@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="Explora ideas y resuelve tareas con un tutor conversacional. Conoce sus límites y decide si deseas iniciar el chat.">
+    <title>Tutor conversacional · Antes de empezar</title>
+    <style>
+      :root { color-scheme: light; font-family: Arial, sans-serif; color: #18392d; background: #f7f4ec; }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      main { width: min(100%, 1024px); margin: 0 auto; }
+      [hidden] { display: none !important; }
+      .cover { position: relative; }
+      .cover-art { display: block; width: 100%; height: auto; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+      .hotspot { position: absolute; transform: translateY(-50%); min-height: 44px; min-width: 44px; padding: 0; border: 0; border-radius: 7px; background: transparent; color: transparent; font-size: 0; cursor: pointer; text-decoration: none; }
+      .hotspot:focus-visible { outline: 3px solid #b95434; outline-offset: 4px; }
+      .hotspot:disabled { cursor: not-allowed; }
+      #accept { left: 56.32%; top: 75.05%; width: 19.47%; height: 6.25%; }
+      #decline { left: 76.82%; top: 75.05%; width: 16.15%; height: 6.25%; }
+      #data-link { left: 82.8%; top: 95.55%; width: 12.8%; height: 4%; }
+      #availability { margin: 0; padding: 14px 24px; font-size: .95rem; line-height: 1.5; border-top: 1px solid #d4d1c7; background: #f7f4ec; }
+      .error { color: #773f2e; }
+      #status:empty { display: none; }
+      #status:not(:empty) { max-width: 680px; margin: 12vh auto; padding: 24px; font-size: 1.1rem; line-height: 1.6; text-align: center; }
+      #datos { display: none; max-width: 880px; margin: 24px auto; padding: 24px; line-height: 1.7; scroll-margin-top: 24px; }
+      #datos:target { display: block; }
+      #datos h2 { font-family: Georgia, serif; font-size: 2rem; font-weight: 500; }
+      #datos a { color: #18392d; text-underline-offset: 4px; }
+      @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+      @media (max-width: 600px) { #availability { padding: 12px 16px; font-size: .875rem; } .hotspot:focus-visible { outline-offset: 1px; } }
+    </style>
+  </head>
+  <body>
+    <main id="inicio" aria-labelledby="title">
+      <section id="consent-gate" aria-labelledby="title">
+        <div class="cover">
+        <img class="cover-art" src="portada-tutor-v1.png" width="1536" height="1024" alt="" aria-hidden="true" fetchpriority="high">
+        <div class="sr-only">
+          <p>Tutor conversacional · Proyecto académico de IA en Educación</p>
+          <h1 id="title">Tu pregunta es el punto de partida.</h1>
+          <p>Explora ideas, resuelve tareas y contrasta razones con ayuda de la inteligencia artificial. A tu ritmo. Con tu propio criterio.</p>
+          <h2>Tú decides si continuar</h2>
+          <p>Esta versión pública es una vista previa. El chat todavía no está habilitado ni se envían mensajes a Botpress.</p>
+          <p>No incluyas datos personales ni información sensible.</p>
+          <p>La IA puede equivocarse. El tutor no asigna notas ni realiza diagnósticos.</p>
+          <p>Cuando el canal se apruebe, el chat solo se cargará después de que aceptes. En esta vista previa no se puede iniciar una conversación.</p>
+          <p>Si se habilita, esta elección permite iniciar la demostración. No autoriza al equipo a usar respuestas para análisis, investigación o seguimiento.</p>
+          <p>Demostración académica: solo ejemplos ficticios. No usar con estudiantes ni introducir datos reales.</p>
+        </div>
+        <div class="actions" role="group" aria-label="Decide si deseas iniciar el chat">
+          <button id="accept" class="hotspot" type="button" aria-describedby="availability" aria-label="Chat no disponible">Chat no disponible</button>
+          <button id="decline" class="hotspot" type="button" aria-label="No, salir">No, salir</button>
+        </div>
+        <a id="data-link" class="hotspot" href="#datos" aria-label="Cómo se usan los datos">Cómo se usan los datos</a>
+        </div>
+        <p id="availability" class="error" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+      </section>
+      <section id="datos" aria-labelledby="data-title">
+        <h2 id="data-title">Cómo se usan tus mensajes</h2>
+        <p>Esta vista previa pública sirve solo la página y su imagen: no carga el chat ni envía mensajes a Botpress. Cuando exista aprobación, se explicarán los servicios que procesan la conversación antes de habilitarla.</p>
+        <p>Esta vista previa no guarda elección ni mensajes en el navegador. El tratamiento, la retención y el borrado de cualquier conversación deberán verificarse antes de habilitar el chat o usarlo con personas reales.</p>
+        <p>Por ahora, utiliza solo ejemplos inventados. Iniciar esta demostración no autoriza investigación, análisis de respuestas ni seguimiento, y no sustituye las autorizaciones necesarias para un piloto.</p>
+        <a href="#inicio">Volver al inicio</a>
+      </section>
+      <section id="chat-state" aria-live="polite" aria-atomic="true">
+        <p id="status" role="status"></p>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+// Candidate copied from the recovered bot's read-only Botpress Deploy Settings.
+const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
+      const EXPECTED_BOT_ID = "REEMPLAZAR_BOT_ID";
+      // Keep null until audience/origin authorization and supporting runtime evidence are approved.
+      // This client-side record is an operational gate, not cryptographic proof or a control over direct Webchat access.
+      const CHANNEL_APPROVAL = null;
+      const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
+      const LOAD_TIMEOUT_MS = 15000;
+      const SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS = 3;
+      const SUBSCRIPTION_CLEANUP_RETRY_DELAY_MS = 1000;
+
+      const gate = document.getElementById("consent-gate");
+      const acceptButton = document.getElementById("accept");
+      const declineButton = document.getElementById("decline");
+      const status = document.getElementById("status");
+      const availability = document.getElementById("availability");
+      let state = "idle";
+      let attemptId = 0;
+      let loadTimeout = null;
+      let injectorState = "not-started";
+      let injectorScriptId = 0;
+      let injectorScript = null;
+      let injectorMissingApi = false;
+      let configScript = null;
+      let configScriptAttemptId = null;
+      let botpressInitBase = null;
+      let botpressInitGuard = null;
+      const initializedSubscriptions = new Set();
+
+      function isAllowedConfigScriptUrl(value) {
+        try {
+          const url = new URL(value);
+          return url.protocol === "https:" &&
+            url.hostname === "files.bpcontent.cloud" &&
+            url.port === "" &&
+            url.username === "" &&
+            url.password === "" &&
+            url.pathname.endsWith(".js");
+        } catch {
+          return false;
+        }
+      }
+
+      function hasVerifiedChannelApproval() {
+        const approval = CHANNEL_APPROVAL;
+        if (!approval || approval.verified !== true) return false;
+        if (approval.botId !== EXPECTED_BOT_ID || approval.configScriptUrl !== CONFIG_SCRIPT_URL) return false;
+        if (typeof approval.channelId !== "string" || approval.channelId.trim() === "") return false;
+        if (!new Set(["synthetic-demo", "authorized-pilot"]).has(approval.audience)) return false;
+        if (typeof approval.evidenceRef !== "string" || approval.evidenceRef.trim() === "") return false;
+        if (typeof approval.verifiedAt !== "string" ||
+          !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(approval.verifiedAt) ||
+          Number.isNaN(Date.parse(approval.verifiedAt))) return false;
+        if (approval.audience === "authorized-pilot" &&
+          (typeof approval.institutionalApprovalRef !== "string" || approval.institutionalApprovalRef.trim() === "")) return false;
+        return true;
+      }
+
+      function getConfigurationError() {
+        if (CONFIG_SCRIPT_URL.startsWith("REEMPLAZAR_")) {
+          return "Vista previa pública: el chat permanece desactivado mientras se aprueban el canal y el dominio.";
+        }
+        if (!isAllowedConfigScriptUrl(CONFIG_SCRIPT_URL)) {
+          return "No se inició el chat: la URL de configuración debe usar HTTPS y pertenecer a files.bpcontent.cloud.";
+        }
+        if (!hasVerifiedChannelApproval()) {
+          return "Vista previa pública: chat desactivado hasta aprobar el canal y el dominio.";
+        }
+        return null;
+      }
+
+      const configurationError = getConfigurationError();
+      if (configurationError) {
+        acceptButton.disabled = true;
+        availability.hidden = false;
+        availability.textContent = configurationError;
+      }
+
+      function setStatus(message, isError = false) {
+        status.textContent = message;
+        status.classList.toggle("error", isError);
+      }
+
+      function isCurrentAttempt(id) {
+        return state === "loading" && attemptId === id;
+      }
+
+      function hasBotpressApi() {
+        return Boolean(window.botpress) &&
+          typeof window.botpress.init === "function" &&
+          typeof window.botpress.on === "function" &&
+          typeof window.botpress.open === "function";
+      }
+
+      function clearLoadTimeout() {
+        if (loadTimeout !== null) {
+          clearTimeout(loadTimeout);
+          loadTimeout = null;
+        }
+      }
+
+      function discardConfigScript(id) {
+        if (!configScript || configScriptAttemptId !== id) return;
+        const obsoleteScript = configScript;
+        configScript = null;
+        configScriptAttemptId = null;
+        obsoleteScript.onload = null;
+        obsoleteScript.onerror = null;
+        if (typeof obsoleteScript.remove === "function") {
+          obsoleteScript.remove();
+        }
+      }
+
+      function installBotpressInitGuard(id, script) {
+        if (!hasBotpressApi()) return false;
+        const api = window.botpress;
+        if (!botpressInitBase || botpressInitBase.api !== api) {
+          botpressInitBase = { api, originalInit: api.init };
+        }
+        const originalInit = botpressInitBase.originalInit;
+        const guard = { api, attemptId: id, script, originalInit, wrapper: null, initInvoked: false };
+        guard.wrapper = function (...args) {
+          if (botpressInitGuard !== guard ||
+            !isCurrentAttempt(guard.attemptId) ||
+            configScript !== guard.script ||
+            configScriptAttemptId !== guard.attemptId ||
+            document.currentScript !== guard.script ||
+            guard.initInvoked) return;
+          if (!args[0] || args[0].botId !== EXPECTED_BOT_ID) {
+            failStartup(guard.attemptId,
+              "La configuración del Webchat intentó iniciar un bot distinto del aprobado. Cierra esta página y no reintentes en esta pestaña.",
+              true);
+            return;
+          }
+          guard.initInvoked = true;
+          return Reflect.apply(guard.originalInit, this, args);
+        };
+        try {
+          api.init = guard.wrapper;
+        } catch {
+          return false;
+        }
+        if (api.init !== guard.wrapper) return false;
+        botpressInitGuard = guard;
+        return true;
+      }
+
+      function invalidateBotpressInitGuard(id) {
+        if (!botpressInitGuard || (id !== undefined && botpressInitGuard.attemptId !== id)) return false;
+        const initInvoked = botpressInitGuard.initInvoked;
+        botpressInitGuard = null;
+        return initInvoked;
+      }
+
+      function restoreBotpressInitGuard(id) {
+        const guard = botpressInitGuard;
+        if (!guard || guard.attemptId !== id) return false;
+        if (guard.api.init !== guard.wrapper) return false;
+        try {
+          guard.api.init = guard.originalInit;
+        } catch {
+          return false;
+        }
+        if (guard.api.init !== guard.originalInit) return false;
+        botpressInitGuard = null;
+        if (botpressInitBase && botpressInitBase.api === guard.api) botpressInitBase = null;
+        return true;
+      }
+
+      function callUnsubscribe(unsubscribe) {
+        if (typeof unsubscribe !== "function") return true;
+        try {
+          unsubscribe();
+          return true;
+        } catch {
+          // Cleanup must not prevent the consent gate from recovering.
+          return false;
+        }
+      }
+
+      function unsubscribeInitializedListener(id) {
+        for (const subscription of [...initializedSubscriptions]) {
+          if (subscription.attemptId !== id) continue;
+          tryUnsubscribeInitializedSubscription(subscription);
+        }
+      }
+
+      function tryUnsubscribeInitializedSubscription(subscription) {
+        if (!initializedSubscriptions.has(subscription) ||
+          subscription.cleanupAttempts >= SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS) return;
+        if (subscription.retryTimer !== null) {
+          clearTimeout(subscription.retryTimer);
+          subscription.retryTimer = null;
+        }
+        subscription.cleanupAttempts += 1;
+        if (callUnsubscribe(subscription.unsubscribe)) {
+          initializedSubscriptions.delete(subscription);
+          return;
+        }
+        if (subscription.cleanupAttempts < SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS) {
+          subscription.retryTimer = setTimeout(() => {
+            subscription.retryTimer = null;
+            tryUnsubscribeInitializedSubscription(subscription);
+          }, SUBSCRIPTION_CLEANUP_RETRY_DELAY_MS);
+        }
+      }
+
+      function failStartup(id, message, forceClosed = false) {
+        if (!isCurrentAttempt(id)) return;
+        const initMayHaveStarted = invalidateBotpressInitGuard(id);
+        const mustFailClosed = initMayHaveStarted || forceClosed;
+        clearLoadTimeout();
+        state = mustFailClosed ? "failed-closed" : "idle";
+        discardConfigScript(id);
+        unsubscribeInitializedListener(id);
+        gate.hidden = false;
+        acceptButton.disabled = mustFailClosed;
+        declineButton.disabled = mustFailClosed;
+        if (initMayHaveStarted) {
+          setStatus("No se pudo confirmar el inicio. Botpress pudo haber empezado a procesar; cierra esta página y no reintentes en esta pestaña.", true);
+          return;
+        }
+        setStatus(message, true);
+        if (forceClosed) return;
+        acceptButton.focus();
+      }
+
+      function armLoadTimeout(id) {
+        clearLoadTimeout();
+        loadTimeout = setTimeout(() => {
+          failStartup(id, "La conexión agotó el tiempo de espera. Puedes intentarlo de nuevo o salir.");
+        }, LOAD_TIMEOUT_MS);
+      }
+
+      function loadConfiguration(id) {
+        if (!isCurrentAttempt(id)) return;
+        if (configScriptAttemptId === id) return;
+        if (configScriptAttemptId !== null) {
+          discardConfigScript(configScriptAttemptId);
+        }
+        if (!hasBotpressApi()) {
+          failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
+          return;
+        }
+
+        for (const subscription of [...initializedSubscriptions]) {
+          if (subscription.attemptId !== id) {
+            unsubscribeInitializedListener(subscription.attemptId);
+          }
+        }
+
+        const script = document.createElement("script");
+        configScript = script;
+        configScriptAttemptId = id;
+        script.src = CONFIG_SCRIPT_URL;
+        script.async = true;
+        if (!installBotpressInitGuard(id, script)) {
+          failStartup(id, "No se pudo proteger el inicio del chat. Puedes intentarlo de nuevo o salir.");
+          return;
+        }
+
+        let unsubscribe;
+        try {
+          unsubscribe = window.botpress.on("webchat:initialized", () => {
+            if (!isCurrentAttempt(id) ||
+              configScript !== script ||
+              configScriptAttemptId !== id ||
+              !botpressInitGuard ||
+              botpressInitGuard.attemptId !== id ||
+              botpressInitGuard.script !== script ||
+              !botpressInitGuard.initInvoked) {
+              unsubscribeInitializedListener(id);
+              return;
+            }
+            try {
+              window.botpress.open();
+            } catch {
+              failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
+              return;
+            }
+            clearLoadTimeout();
+            state = "ready";
+            const initRestored = restoreBotpressInitGuard(id);
+            discardConfigScript(id);
+            setStatus(initRestored
+              ? "El tutor está listo. Evita compartir datos personales o sensibles."
+              : "El tutor está listo, pero no se pudo confirmar la restauración del SDK. Cierra y vuelve a abrir esta página antes de otra sesión.",
+            !initRestored);
+            unsubscribeInitializedListener(id);
+          });
+        } catch {
+          failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
+          return;
+        }
+
+        if (typeof unsubscribe === "function") {
+          const subscription = { attemptId: id, unsubscribe, cleanupAttempts: 0, retryTimer: null };
+          initializedSubscriptions.add(subscription);
+          if (!isCurrentAttempt(id)) tryUnsubscribeInitializedSubscription(subscription);
+        }
+
+        script.onload = () => {
+          if (!isCurrentAttempt(id)) return;
+          // Keep the timeout armed until webchat:initialized confirms startup.
+        };
+        script.onerror = () => {
+          failStartup(id, "No se pudo cargar la configuración del chat. Puedes intentarlo de nuevo o salir.");
+        };
+        armLoadTimeout(id);
+        document.head.appendChild(script);
+      }
+
+      function abandonInjector(scriptId) {
+        if (scriptId !== injectorScriptId) return;
+        const obsoleteScript = injectorScript;
+        injectorScriptId += 1;
+        injectorScript = null;
+        injectorState = "not-started";
+        if (obsoleteScript && typeof obsoleteScript.remove === "function") {
+          obsoleteScript.remove();
+        }
+      }
+
+      function loadBotpressAfterAcceptance(event) {
+        if (!event || event.isTrusted !== true || state !== "idle" || configurationError) return;
+        state = "loading";
+        const id = ++attemptId;
+        acceptButton.disabled = true;
+        declineButton.disabled = true;
+        gate.hidden = true;
+
+        setStatus("Conectando con el tutor…");
+        if (injectorState === "loaded" && hasBotpressApi()) {
+          loadConfiguration(id);
+          return;
+        }
+
+        if (injectorState === "loading" && hasBotpressApi()) {
+          // The API appeared after the previous timeout. Invalidate the
+          // pending tag so its eventual callbacks cannot start a second config.
+          abandonInjector(injectorScriptId);
+          loadConfiguration(id);
+          return;
+        }
+
+        if (injectorMissingApi && hasBotpressApi()) {
+          // Reuse an API that appeared after injector onload reported it missing.
+          injectorMissingApi = false;
+          injectorState = "loaded";
+          loadConfiguration(id);
+          return;
+        }
+
+        if (injectorState === "loading") {
+          // The previous attempt already timed out. Detach it and let this
+          // retry own a fresh request; its callbacks are invalidated below.
+          abandonInjector(injectorScriptId);
+        } else if (injectorState === "loaded") {
+          // A completed injector without the expected API cannot serve retry.
+          abandonInjector(injectorScriptId);
+        }
+
+        const script = document.createElement("script");
+        script.src = INJECT_URL;
+        script.async = true;
+        const scriptId = ++injectorScriptId;
+        injectorScript = script;
+        injectorState = "loading";
+        injectorMissingApi = false;
+        script.onload = () => {
+          if (scriptId !== injectorScriptId) return;
+          if (!hasBotpressApi()) {
+            abandonInjector(scriptId);
+            injectorMissingApi = true;
+            if (state === "loading") {
+              loadConfiguration(attemptId);
+            }
+            return;
+          }
+          injectorState = "loaded";
+          if (state !== "loading") return;
+          const activeAttemptId = attemptId;
+          clearLoadTimeout();
+          loadConfiguration(activeAttemptId);
+        };
+        script.onerror = () => {
+          if (scriptId !== injectorScriptId) return;
+          abandonInjector(scriptId);
+          injectorMissingApi = false;
+          if (state === "loading") {
+            failStartup(attemptId, "No se pudo cargar el chat. Puedes intentarlo de nuevo o salir.");
+          }
+        };
+        armLoadTimeout(id);
+        document.head.appendChild(script);
+      }
+
+      function decline() {
+        if (state !== "idle") return;
+        state = "declined";
+        attemptId += 1;
+        invalidateBotpressInitGuard();
+        clearLoadTimeout();
+        for (const subscription of [...initializedSubscriptions]) {
+          unsubscribeInitializedListener(subscription.attemptId);
+        }
+        if (configScriptAttemptId !== null) {
+          discardConfigScript(configScriptAttemptId);
+        }
+        if (injectorState === "loading") {
+          abandonInjector(injectorScriptId);
+        }
+        injectorMissingApi = false;
+        gate.hidden = true;
+        acceptButton.disabled = true;
+        declineButton.disabled = true;
+        setStatus("No se inició el chat. Puedes cerrar esta página.");
+      }
+
+      acceptButton.addEventListener("click", loadBotpressAfterAcceptance);
+      declineButton.addEventListener("click", decline);
+      })();
+    </script>
+  </body>
+</html>
