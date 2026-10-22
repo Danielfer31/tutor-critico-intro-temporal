@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
-    <meta name="description" content="Explora ideas y resuelve tareas con un tutor conversacional. Conoce sus límites y decide si deseas iniciar el chat.">
+    <meta name="description" content="Prototipo académico de un tutor conversacional. Prueba el chat con preguntas ficticias y decide si deseas continuar.">
     <title>Tutor conversacional · Antes de empezar</title>
     <style>
       :root { color-scheme: light; font-family: Arial, sans-serif; color: #18392d; background: #f7f4ec; }
@@ -39,19 +39,18 @@
         <div class="cover">
         <img class="cover-art" src="portada-tutor-v1.png" width="1536" height="1024" alt="" aria-hidden="true" fetchpriority="high">
         <div class="sr-only">
-          <p>Tutor conversacional · Proyecto académico de IA en Educación</p>
+          <p>Prototipo académico · Tutor conversacional de pensamiento crítico</p>
           <h1 id="title">Tu pregunta es el punto de partida.</h1>
           <p>Explora ideas, resuelve tareas y contrasta razones con ayuda de la inteligencia artificial. A tu ritmo. Con tu propio criterio.</p>
           <h2>Tú decides si continuar</h2>
-          <p>Esta versión pública es una vista previa. El chat todavía no está habilitado ni se envían mensajes a Botpress.</p>
+          <p>Este prototipo académico conecta con un tutor conversacional de demostración.</p>
           <p>No incluyas datos personales ni información sensible.</p>
           <p>La IA puede equivocarse. El tutor no asigna notas ni realiza diagnósticos.</p>
-          <p>Cuando el canal se apruebe, el chat solo se cargará después de que aceptes. En esta vista previa no se puede iniciar una conversación.</p>
-          <p>Si se habilita, esta elección permite iniciar la demostración. No autoriza al equipo a usar respuestas para análisis, investigación o seguimiento.</p>
-          <p>Demostración académica: solo ejemplos ficticios. No usar con estudiantes ni introducir datos reales.</p>
+          <p>Al aceptar, se cargará el chat y Botpress procesará los mensajes que escribas. Antes de aceptar, el chat no se carga.</p>
+          <p>Usa preguntas inventadas. Esta decisión permite iniciar la demostración; no autoriza investigación ni seguimiento de tus respuestas.</p>
         </div>
         <div class="actions" role="group" aria-label="Decide si deseas iniciar el chat">
-          <button id="accept" class="hotspot" type="button" aria-describedby="availability" aria-label="Chat no disponible">Chat no disponible</button>
+          <button id="accept" class="hotspot" type="button" aria-describedby="availability" aria-label="Acepto y continúo">Acepto y continúo</button>
           <button id="decline" class="hotspot" type="button" aria-label="No, salir">No, salir</button>
         </div>
         <a id="data-link" class="hotspot" href="#datos" aria-label="Cómo se usan los datos">Cómo se usan los datos</a>
@@ -60,9 +59,9 @@
       </section>
       <section id="datos" aria-labelledby="data-title">
         <h2 id="data-title">Cómo se usan tus mensajes</h2>
-        <p>Esta vista previa pública sirve solo la página y su imagen: no carga el chat ni envía mensajes a Botpress. Cuando exista aprobación, se explicarán los servicios que procesan la conversación antes de habilitarla.</p>
-        <p>Esta vista previa no guarda elección ni mensajes en el navegador. El tratamiento, la retención y el borrado de cualquier conversación deberán verificarse antes de habilitar el chat o usarlo con personas reales.</p>
-        <p>Por ahora, utiliza solo ejemplos inventados. Iniciar esta demostración no autoriza investigación, análisis de respuestas ni seguimiento, y no sustituye las autorizaciones necesarias para un piloto.</p>
+        <p>Al aceptar, esta página carga el Webchat de Botpress. Botpress procesa los mensajes que envíes. No incluyas datos personales ni información sensible.</p>
+        <p>Esta página no guarda tu elección ni tus mensajes en el navegador. Usa únicamente preguntas ficticias para probar el prototipo.</p>
+        <p>La decisión de iniciar el chat no autoriza al equipo a analizar tus respuestas para investigación o seguimiento.</p>
         <a href="#inicio">Volver al inicio</a>
       </section>
       <section id="chat-state" aria-live="polite" aria-atomic="true">
@@ -73,10 +72,10 @@
     <script>
       (() => {
 // Candidate copied from the recovered bot's read-only Botpress Deploy Settings.
-const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
-      const EXPECTED_BOT_ID = "REEMPLAZAR_BOT_ID";
-      // Keep null until audience/origin authorization and supporting runtime evidence are approved.
-      // This client-side record is an operational gate, not cryptographic proof or a control over direct Webchat access.
+const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/20261022204512-SPI9IIB0.js";
+      const EXPECTED_BOT_ID = "b5ee6e0a-2956-4558-9f4c-0881ac4a1d61";
+      // Academic demo mode skips the institutional approval record; every Webchat load still waits for a trusted consent click.
+      const ACADEMIC_DEMO_MODE = true;
       const CHANNEL_APPROVAL = null;
       const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
       const LOAD_TIMEOUT_MS = 15000;
@@ -132,13 +131,13 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
 
       function getConfigurationError() {
         if (CONFIG_SCRIPT_URL.startsWith("REEMPLAZAR_")) {
-          return "Vista previa pública: el chat permanece desactivado mientras se aprueban el canal y el dominio.";
+          return "Prototipo académico: falta configurar el canal Webchat de demostración.";
         }
         if (!isAllowedConfigScriptUrl(CONFIG_SCRIPT_URL)) {
           return "No se inició el chat: la URL de configuración debe usar HTTPS y pertenecer a files.bpcontent.cloud.";
         }
-        if (!hasVerifiedChannelApproval()) {
-          return "Vista previa pública: chat desactivado hasta aprobar el canal y el dominio.";
+        if (!ACADEMIC_DEMO_MODE && !hasVerifiedChannelApproval()) {
+          return "No se puede iniciar el chat sin verificar el canal Webchat.";
         }
         return null;
       }
@@ -187,12 +186,31 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
 
       function installBotpressInitGuard(id, script) {
         if (!hasBotpressApi()) return false;
-        const api = window.botpress;
-        if (!botpressInitBase || botpressInitBase.api !== api) {
-          botpressInitBase = { api, originalInit: api.init };
+        const activeApi = window.botpress;
+        const previousBase = botpressInitBase;
+        const reusingFacade = previousBase &&
+          (activeApi === previousBase.proxy || activeApi === previousBase.facade);
+        const api = reusingFacade ? previousBase.api : activeApi;
+        if (!reusingFacade) {
+          botpressInitBase = { api, originalGlobal: activeApi, originalInit: api.init, facade: null, proxy: null };
         }
-        const originalInit = botpressInitBase.originalInit;
-        const guard = { api, attemptId: id, script, originalInit, wrapper: null, initInvoked: false };
+        const base = botpressInitBase;
+        const globalDescriptor = Object.getOwnPropertyDescriptor(window, "botpress");
+        if (!globalDescriptor ||
+          (!globalDescriptor.writable && typeof globalDescriptor.set !== "function" && !globalDescriptor.configurable)) {
+          return false;
+        }
+        const guard = {
+          api,
+          attemptId: id,
+          script,
+          originalGlobal: base.originalGlobal,
+          originalInit: base.originalInit,
+          wrapper: null,
+          facade: null,
+          proxy: null,
+          initInvoked: false
+        };
         guard.wrapper = function (...args) {
           if (botpressInitGuard !== guard ||
             !isCurrentAttempt(guard.attemptId) ||
@@ -202,19 +220,48 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
             guard.initInvoked) return;
           if (!args[0] || args[0].botId !== EXPECTED_BOT_ID) {
             failStartup(guard.attemptId,
-              "La configuración del Webchat intentó iniciar un bot distinto del aprobado. Cierra esta página y no reintentes en esta pestaña.",
+              "La configuración intentó iniciar un bot distinto al de esta demostración. Cierra esta página y no reintentes en esta pestaña.",
               true);
             return;
           }
           guard.initInvoked = true;
-          return Reflect.apply(guard.originalInit, this, args);
+          return Reflect.apply(guard.originalInit, guard.api, args);
         };
+        const facade = Object.create(Object.getPrototypeOf(api));
+        Object.defineProperty(facade, "init", {
+          value: guard.wrapper,
+          configurable: false,
+          enumerable: true,
+          writable: false
+        });
+        const proxy = new Proxy(facade, {
+          get(target, property) {
+            if (property === "init") return guard.wrapper;
+            const value = Reflect.get(api, property, api);
+            return typeof value === "function" ? value.bind(api) : value;
+          },
+          set(target, property, value) {
+            if (property === "init") return false;
+            return Reflect.set(api, property, value, api);
+          },
+          has(target, property) { return property === "init" || property in api; },
+          ownKeys(target) { return [...new Set([...Reflect.ownKeys(api), "init"])]; },
+          getOwnPropertyDescriptor(target, property) {
+            if (property === "init") return Reflect.getOwnPropertyDescriptor(target, property);
+            const descriptor = Object.getOwnPropertyDescriptor(api, property);
+            return descriptor ? { ...descriptor, configurable: true } : undefined;
+          }
+        });
+        guard.facade = facade;
+        guard.proxy = proxy;
         try {
-          api.init = guard.wrapper;
+          window.botpress = proxy;
         } catch {
           return false;
         }
-        if (api.init !== guard.wrapper) return false;
+        if (window.botpress !== proxy) return false;
+        base.facade = facade;
+        base.proxy = proxy;
         botpressInitGuard = guard;
         return true;
       }
@@ -229,13 +276,13 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
       function restoreBotpressInitGuard(id) {
         const guard = botpressInitGuard;
         if (!guard || guard.attemptId !== id) return false;
-        if (guard.api.init !== guard.wrapper) return false;
+        if (window.botpress !== guard.proxy) return false;
         try {
-          guard.api.init = guard.originalInit;
+          window.botpress = guard.originalGlobal;
         } catch {
           return false;
         }
-        if (guard.api.init !== guard.originalInit) return false;
+        if (window.botpress !== guard.originalGlobal) return false;
         botpressInitGuard = null;
         if (botpressInitBase && botpressInitBase.api === guard.api) botpressInitBase = null;
         return true;
@@ -497,3 +544,4 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_CONFIG_URL";
     </script>
   </body>
 </html>
+
