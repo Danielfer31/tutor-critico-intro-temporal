@@ -636,7 +636,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
         const chat = document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat.bpOpen");
         const preparation = document.getElementById("prepara");
         const shouldDock = window.innerWidth > 1200 && preparation &&
-          preparation.getBoundingClientRect().top <= window.innerHeight * 0.55;
+          preparation.getBoundingClientRect().top <= window.innerHeight * 0.95;
         chat?.classList.toggle("tutor-docked", Boolean(shouldDock));
         document.body.classList.toggle("chat-scrolled", Boolean(shouldDock));
       }
