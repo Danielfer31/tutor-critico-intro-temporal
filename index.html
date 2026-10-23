@@ -240,6 +240,9 @@
       .tip-card:hover { transform: translateY(-2px); border-color: #c8a18e; box-shadow: 0 7px 16px rgba(24,57,45,.07); }
       .tip-card span { display: block; margin-bottom: 5px; color: var(--terracotta); font-size: .68rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
       .tip-card p { margin: 0; color: var(--ink-soft); font-size: .77rem; line-height: 1.4; }
+      .documents-panel { margin-top: 18px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #f8f7f1; }
+      .documents-panel > h3 { margin: 0 0 12px; font: 500 1.12rem/1.25 Georgia, "Times New Roman", serif; }
+      .documents-panel .field-group { margin-top: 0; }
       .context-panel { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #f8f7f1; }
       .context-panel > p { margin: -4px 0 16px; color: var(--ink-soft); font-size: .82rem; line-height: 1.45; }
       .field-group { margin-top: 13px; }
@@ -546,7 +549,22 @@
                   <article class="tip-card"><span>02 · Profundiza</span><p>Pide razones, ejemplos o contraejemplos.</p></article>
                   <article class="tip-card"><span>03 · Reflexiona</span><p>Cierra con lo que cambió en tu idea.</p></article>
                 </div>
-              </aside>
+          </aside>
+
+          <aside class="documents-panel" aria-labelledby="documents-title">
+            <h3 id="documents-title">Documentos de referencia</h3>
+            <div class="field-group">
+              <label class="file-drop" for="reference-files">
+                <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 19V5m0 0L8.5 10.5M14 5l5.5 5.5M5 17v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="file-drop-copy"><strong>Añade archivos para tenerlos a mano</strong><small>PDF, Word, texto o imagen. Se muestran solo en esta página.</small></span>
+                <span class="file-pick-label" aria-hidden="true">Elegir archivos</span>
+                <input id="reference-files" type="file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple aria-label="Elegir documentos de referencia">
+              </label>
+              <p id="file-list" class="file-list" aria-live="polite">Todavía no has añadido documentos.</p>
+              <button id="clear-files" class="clear-files" type="button" hidden>Quitar documentos</button>
+            </div>
+            <p class="document-note">El tutor no puede abrir ni leer el contenido de estos archivos, y no se cargan ni se envían. Al copiar el contexto solo incluirás sus nombres. Si quieres compartir una idea, pega aquí un resumen o fragmento.</p>
+          </aside>
             </div>
 
             <div class="context-panel" aria-labelledby="context-title">
@@ -562,19 +580,6 @@
               <div class="field-group">
                 <label class="field-label" for="context-details">Notas o fragmento de lectura</label>
                 <textarea id="context-details" rows="4" placeholder="Pega un resumen breve o anota qué te gustaría tener presente."></textarea>
-              </div>
-
-              <div class="field-group">
-                <span class="field-label">Documentos de referencia</span>
-                <label class="file-drop" for="reference-files">
-                  <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 19V5m0 0L8.5 10.5M14 5l5.5 5.5M5 17v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span class="file-drop-copy"><strong>Añade archivos para tenerlos a mano</strong><small>PDF, Word, texto o imagen. Se muestran solo en esta página.</small></span>
-                  <span class="file-pick-label" aria-hidden="true">Elegir archivos</span>
-                  <input id="reference-files" type="file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple aria-label="Elegir documentos de referencia">
-                </label>
-                <p id="file-list" class="file-list" aria-live="polite">Todavía no has añadido documentos.</p>
-                <button id="clear-files" class="clear-files" type="button" hidden>Quitar documentos</button>
-                <p class="document-note">El tutor no puede abrir ni leer el contenido de estos archivos, y no se cargan ni se envían. Al copiar el contexto solo incluirás sus nombres. Si quieres compartir una idea, pega aquí un resumen o fragmento.</p>
               </div>
 
               <div class="field-group">
