@@ -4,544 +4,721 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
-    <meta name="description" content="Prototipo académico de un tutor conversacional. Prueba el chat con preguntas ficticias y decide si deseas continuar.">
-    <title>Tutor conversacional · Antes de empezar</title>
+    <meta name="description" content="Prototipo académico para explorar ideas, contrastar razones y practicar el pensamiento crítico con un tutor conversacional.">
+    <meta name="theme-color" content="#f7f4ec">
+    <title>Tutor conversacional · Haz mejores preguntas</title>
     <style>
-      :root { color-scheme: light; font-family: Arial, sans-serif; color: #18392d; background: #f7f4ec; }
+      :root {
+        color-scheme: light;
+        --paper: #f7f4ec;
+        --paper-white: #fcfbf7;
+        --ink: #18392d;
+        --ink-soft: #536056;
+        --sage: #e4e8dc;
+        --sage-deep: #87977c;
+        --terracotta: #b95434;
+        --terracotta-pale: #f1dfd5;
+        --sand: #eee4d3;
+        --line: #d6d0c4;
+        font-family: Arial, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
       * { box-sizing: border-box; }
-      body { margin: 0; }
-      main { width: min(100%, 1024px); margin: 0 auto; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          radial-gradient(ellipse at 16% 12%, rgba(135, 151, 124, .11), transparent 28rem),
+          radial-gradient(ellipse at 86% 40%, rgba(185, 84, 52, .08), transparent 30rem),
+          var(--paper);
+      }
       [hidden] { display: none !important; }
-      .cover { position: relative; }
-      .cover-art { display: block; width: 100%; height: auto; }
-      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-      .hotspot { position: absolute; transform: translateY(-50%); min-height: 44px; min-width: 44px; padding: 0; border: 0; border-radius: 7px; background: transparent; color: transparent; font-size: 0; cursor: pointer; text-decoration: none; }
-      .hotspot:focus-visible { outline: 3px solid #b95434; outline-offset: 4px; }
-      .hotspot:disabled { cursor: not-allowed; }
-      #accept { left: 56.32%; top: 75.05%; width: 19.47%; height: 6.25%; }
-      #decline { left: 76.82%; top: 75.05%; width: 16.15%; height: 6.25%; }
-      #data-link { left: 82.8%; top: 95.55%; width: 12.8%; height: 4%; }
-      #availability { margin: 0; padding: 14px 24px; font-size: .95rem; line-height: 1.5; border-top: 1px solid #d4d1c7; background: #f7f4ec; }
-      .error { color: #773f2e; }
+      button, a { font: inherit; }
+      a { color: inherit; }
+      .page-shell { width: min(100% - 48px, 1440px); margin: 0 auto; }
+      .site-header {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+      .brand-mark { width: 37px; height: 32px; flex: none; }
+      .brand-name { font: 600 1.28rem/1 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+      .brand-subtitle { display: block; margin-top: 5px; color: var(--ink-soft); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; }
+      .site-nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); }
+      .site-nav a { color: var(--ink-soft); font-size: .9rem; text-decoration: none; }
+      .site-nav a:hover, .footer-link:hover { color: var(--terracotta); }
+      .site-nav .nav-cta {
+        padding: 12px 18px;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        color: var(--paper-white);
+        background: var(--ink);
+        transition: transform .2s ease, background .2s ease;
+      }
+      .site-nav .nav-cta:hover { color: white; background: #285441; transform: translateY(-1px); }
+      .mosaic-intro { padding-top: 24px; }
+      .top-grid {
+        display: grid;
+        grid-template-columns: minmax(240px, .92fr) minmax(400px, 1.34fr) minmax(190px, .7fr);
+        gap: 14px;
+        align-items: stretch;
+      }
+      .card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 19px;
+        box-shadow: 0 10px 28px rgba(24, 57, 45, .045);
+        transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+      }
+      .card:hover { transform: translateY(-3px); border-color: #b9c2b3; box-shadow: 0 16px 34px rgba(24, 57, 45, .1); }
+      .intro-card {
+        min-height: 380px;
+        padding: clamp(24px, 3vw, 40px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--paper-white);
+        isolation: isolate;
+      }
+      .intro-card::before {
+        position: absolute;
+        z-index: -1;
+        right: -42px;
+        bottom: -78px;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: var(--sage);
+        content: "";
+      }
+      .intro-card::after {
+        position: absolute;
+        z-index: -1;
+        right: 62px;
+        bottom: -48px;
+        width: 116px;
+        height: 116px;
+        border-radius: 50%;
+        background: var(--terracotta-pale);
+        content: "";
+      }
+      .eyebrow { margin: 0 0 14px; color: var(--terracotta); font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+      h1, h2, p { margin-top: 0; }
+      h1, .tile-title, .bottom-tile h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
+      h1 { max-width: 8ch; margin-bottom: 16px; font-size: clamp(2.7rem, 4vw, 4.5rem); line-height: .98; letter-spacing: -.055em; }
+      .intro-copy { max-width: 34ch; margin-bottom: 0; color: var(--ink-soft); font-size: 1.02rem; line-height: 1.65; }
+      .insight-carousel { margin-top: 24px; display: grid; grid-template-columns: 30px minmax(0, 1fr) 30px; align-items: center; gap: 9px; }
+      .insight-copy { min-height: 55px; display: flex; flex-direction: column; justify-content: center; }
+      .insight-kind { margin-bottom: 4px; color: var(--terracotta); font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+      .insight-copy p { margin: 0; color: var(--ink); font: italic .98rem/1.35 Georgia, "Times New Roman", serif; }
+      .insight-control { width: 30px; height: 30px; padding: 0; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.7); cursor: pointer; transition: transform .2s ease, color .2s ease, border-color .2s ease, background .2s ease; }
+      .insight-control:hover { transform: translateY(-1px); border-color: var(--terracotta); color: var(--terracotta); background: white; }
+      #insight-count { grid-column: 2; margin-top: -2px; color: #72786e; font-size: .64rem; }
+      .launch-card {
+        min-height: 380px;
+        padding: clamp(22px, 2.5vw, 32px);
+        display: flex;
+        flex-direction: column;
+        background: rgba(252, 251, 247, .95);
+      }
+      .bot-card-header { display: flex; align-items: center; gap: 14px; padding-bottom: 19px; border-bottom: 1px solid var(--line); }
+      .bot-avatar {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        flex: none;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--ink);
+        background: var(--sage);
+      }
+      .bot-card-header h2 { margin: 0; font: 500 1.55rem/1.1 Georgia, "Times New Roman", serif; }
+      .bot-card-header p { margin: 4px 0 0; color: var(--ink-soft); font-size: .85rem; }
+      .bot-card-body { padding: clamp(22px, 3vw, 36px) 2px 18px; }
+      .bot-card-body h3 { max-width: 19ch; margin: 0 0 10px; font: 500 clamp(1.55rem, 2.4vw, 2.15rem)/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+      .bot-card-body > p { max-width: 50ch; margin-bottom: 18px; color: var(--ink-soft); line-height: 1.55; }
+      .topic-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+      .topic-list li { padding: 8px 11px; border: 1px solid #d4dacd; border-radius: 999px; color: #405143; background: #f4f5ef; font-size: .78rem; }
+      .launch-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+      .preview-action { min-height: 48px; padding: 0 19px; display: inline-flex; align-items: center; border: 1px solid var(--ink); border-radius: 10px; color: var(--paper-white); background: var(--ink); font-size: .9rem; font-weight: 700; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+      .preview-action:hover { transform: translateY(-1px); background: #285441; }
+      .preview-action:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      #accept, #decline { min-height: 48px; border-radius: 10px; cursor: pointer; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+      #accept { min-width: 164px; padding: 0 19px; border: 1px solid var(--ink); color: white; background: var(--ink); font-weight: 700; }
+      #accept::after { display: inline-block; margin-left: 12px; content: "→"; font-size: 1.15rem; }
+      #accept:hover:not(:disabled) { background: #285441; transform: translateY(-1px); }
+      #decline { padding: 0 14px; border: 1px solid transparent; color: var(--ink-soft); background: transparent; }
+      #decline:hover:not(:disabled) { border-color: var(--line); background: var(--paper); }
+      #accept:focus-visible, #decline:focus-visible, .site-nav a:focus-visible, .footer-link:focus-visible, summary:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      #accept:disabled, #decline:disabled { cursor: default; opacity: .72; }
+      .use-note { margin: 16px 0 0; color: #6f766d; font-size: .75rem; line-height: 1.45; }
+      #availability { margin: 10px 0 0; color: #773f2e; font-size: .85rem; line-height: 1.5; }
+      .side-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 14px; }
+      .side-tile { min-height: 183px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
+      .tile-terracotta { border-color: #b95434; color: #fffaf4; background: var(--terracotta); }
+      .tile-sage { background: var(--sage); }
+      .tile-icon { width: 38px; height: 38px; }
+      .tile-title { max-width: 10ch; margin: 14px 0 5px; font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.03; letter-spacing: -.025em; }
+      .side-tile p { margin: 0; color: inherit; opacity: .82; font-size: .82rem; line-height: 1.45; }
+      .bottom-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+      .bottom-tile { min-height: 128px; padding: 20px 22px; display: flex; align-items: center; gap: 16px; }
+      .bottom-tile:nth-child(1) { background: #e8ebdf; }
+      .bottom-tile:nth-child(2) { background: var(--paper-white); }
+      .bottom-tile:nth-child(3) { background: var(--terracotta-pale); }
+      .bottom-icon { width: 48px; height: 48px; display: grid; flex: none; place-items: center; border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.55); }
+      .bottom-icon svg { width: 25px; height: 25px; }
+      .bottom-tile h2 { margin: 0 0 5px; font-size: 1.3rem; line-height: 1.05; }
+      .bottom-tile p { margin: 0; color: var(--ink-soft); font-size: .82rem; line-height: 1.4; }
+      .tool-launch .tile-copy { min-width: 0; }
+      .tool-launch h2 { font-size: clamp(1.08rem, 1.4vw, 1.3rem); }
+      .tool-action { margin-top: 9px; padding: 0; border: 0; color: var(--ink); background: transparent; font-size: .75rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--terracotta); text-underline-offset: 4px; cursor: pointer; }
+      .tool-action:hover { color: var(--terracotta); }
+      .tool-action:focus-visible, .insight-control:focus-visible, .dialog-close:focus-visible, .dialog-primary:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      .tool-dialog { width: min(620px, calc(100% - 32px)); max-height: min(88vh, 760px); padding: clamp(22px, 4vw, 34px); overflow: auto; border: 1px solid var(--line); border-radius: 20px; color: var(--ink); background: var(--paper-white); box-shadow: 0 24px 72px rgba(15, 35, 25, .3); }
+      .tool-dialog::backdrop { background: rgba(17, 34, 27, .55); backdrop-filter: blur(3px); }
+      .tool-dialog[open] { animation: dialog-appear .18s ease-out; }
+      @keyframes dialog-appear { from { opacity: 0; transform: translateY(7px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+      .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+      .dialog-heading .eyebrow { margin-bottom: 8px; }
+      .dialog-heading h2 { margin: 0; font: 500 clamp(1.7rem, 4vw, 2.25rem)/1.08 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
+      .tool-dialog > p { margin: 12px 0 18px; color: var(--ink-soft); font-size: .9rem; line-height: 1.55; }
+      .dialog-close { width: 38px; height: 38px; flex: none; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: white; font-size: 1.25rem; cursor: pointer; }
+      .tool-dialog label { display: block; margin-bottom: 7px; font-size: .83rem; font-weight: 700; }
+      .tool-dialog textarea { width: 100%; min-height: 105px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fffefa; font: .9rem/1.5 Arial, sans-serif; resize: vertical; }
+      .dialog-primary { min-height: 43px; margin-top: 10px; padding: 0 16px; border: 1px solid var(--ink); border-radius: 9px; color: white; background: var(--ink); font-size: .82rem; font-weight: 700; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+      .dialog-primary:hover { transform: translateY(-1px); background: #285441; }
+      .dialog-note { margin: 14px 0 0 !important; padding: 10px 12px; border-left: 3px solid var(--sage-deep); color: #505a50 !important; background: var(--sage); font-size: .77rem !important; }
+      .question-rubric { margin: 18px 0 0; padding: 0; display: grid; gap: 7px; list-style: none; }
+      .question-rubric li { padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink-soft); background: #f7f5ef; font-size: .8rem; line-height: 1.4; }
+      .question-rubric li[data-met="true"] { border-color: #b8c5b1; color: var(--ink); background: #edf1e8; }
+      .result-panel { margin-top: 13px; padding: 13px 14px; border: 1px solid #d7dacd; border-radius: 12px; background: var(--sage); }
+      .result-panel h3 { margin: 0 0 5px; font: 600 1rem/1.3 Arial, sans-serif; }
+      .result-panel p { margin: 0; color: var(--ink-soft); font-size: .82rem; line-height: 1.5; }
+      .criteria-checklist { margin: 16px 0 0; padding: 0; display: grid; gap: 8px; border: 0; }
+      .criteria-checklist legend { margin-bottom: 9px; font-size: .85rem; font-weight: 700; }
+      .criteria-checklist label { margin: 0; padding: 10px 11px; display: flex; align-items: flex-start; gap: 9px; border: 1px solid var(--line); border-radius: 10px; background: #faf9f4; font-size: .81rem; font-weight: 400; line-height: 1.4; cursor: pointer; }
+      .criteria-checklist input { width: 16px; height: 16px; flex: none; margin: 1px 0 0; accent-color: var(--ink); }
+      .prep-section { margin-top: 16px; padding: clamp(22px, 3vw, 36px); background: var(--paper-white); scroll-margin-top: 16px; }
+      .prep-disclosure { min-width: 0; }
+      .prep-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; list-style: none; cursor: pointer; }
+      .prep-heading::-webkit-details-marker { display: none; }
+      .prep-heading:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 5px; border-radius: 8px; }
+      .prep-heading-main { min-width: 0; flex: 1; }
+      .prep-heading .eyebrow { margin-bottom: 9px; }
+      .prep-title { display: block; max-width: 18ch; font: 500 clamp(1.85rem, 3vw, 2.6rem)/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
+      .prep-summary-copy { max-width: 40ch; margin: 0 0 2px; color: var(--ink-soft); font-size: .92rem; line-height: 1.55; }
+      .prep-toggle { min-width: 194px; display: inline-flex; align-items: center; justify-content: flex-end; gap: 9px; color: var(--ink); font-size: .78rem; font-weight: 700; text-align: right; }
+      .prep-toggle-open { display: none; }
+      .prep-toggle svg { width: 18px; height: 18px; flex: none; transition: transform .2s ease; }
+      .prep-disclosure[open] .prep-toggle-closed { display: none; }
+      .prep-disclosure[open] .prep-toggle-open { display: inline; }
+      .prep-disclosure[open] .prep-toggle svg { transform: rotate(180deg); }
+      .prep-grid { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: 18px; align-items: start; }
+      .prep-column > h3, .context-panel > h3 { margin: 0 0 12px; font: 500 1.24rem/1.2 Georgia, "Times New Roman", serif; }
+      .task-options { display: grid; gap: 10px; }
+      .task-option {
+        width: 100%; min-height: 78px; padding: 14px 16px; display: grid; grid-template-columns: 34px minmax(0, 1fr) 20px; align-items: center; gap: 12px;
+        border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: #faf9f4; text-align: left; cursor: pointer;
+        transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      }
+      .task-option:hover, .task-option:focus-visible { transform: translateY(-2px); border-color: var(--sage-deep); background: #f2f4ec; box-shadow: 0 9px 18px rgba(24,57,45,.08); }
+      .task-option[aria-pressed="true"] { border-color: var(--ink); background: var(--sage); box-shadow: inset 3px 0 var(--terracotta); }
+      .task-option:focus-visible, .copy-context:focus-visible, .clear-files:focus-visible, textarea:focus-visible, .file-drop:focus-within { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      .task-number { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; color: var(--terracotta); background: var(--terracotta-pale); font-size: .77rem; font-weight: 700; }
+      .task-copy strong, .task-copy small { display: block; }
+      .task-copy strong { margin-bottom: 4px; font-size: .94rem; }
+      .task-copy small { color: var(--ink-soft); font-size: .78rem; line-height: 1.4; }
+      .task-arrow { color: var(--terracotta); font-size: 1.15rem; text-align: right; }
+      .tips-panel { margin-top: 20px; }
+      .tips-panel h3 { margin: 0 0 10px; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; }
+      .tip-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+      .tip-card { min-height: 84px; padding: 12px; border: 1px solid #e1ddd3; border-radius: 12px; background: var(--paper); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+      .tip-card:hover { transform: translateY(-2px); border-color: #c8a18e; box-shadow: 0 7px 16px rgba(24,57,45,.07); }
+      .tip-card span { display: block; margin-bottom: 5px; color: var(--terracotta); font-size: .68rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+      .tip-card p { margin: 0; color: var(--ink-soft); font-size: .77rem; line-height: 1.4; }
+      .context-panel { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #f8f7f1; }
+      .context-panel > p { margin: -4px 0 16px; color: var(--ink-soft); font-size: .82rem; line-height: 1.45; }
+      .field-group { margin-top: 13px; }
+      .field-label { display: block; margin-bottom: 6px; color: var(--ink); font-size: .8rem; font-weight: 700; }
+      .field-help { display: block; margin-top: 5px; color: #71776d; font-size: .72rem; line-height: 1.4; }
+      .context-panel textarea { width: 100%; min-height: 78px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fffefa; font: .84rem/1.5 Arial, sans-serif; resize: vertical; }
+      #objective { min-height: 76px; }
+      #context-details { min-height: 92px; }
+      .file-drop { position: relative; min-height: 78px; padding: 12px; display: flex; align-items: center; gap: 11px; border: 1px dashed #9da897; border-radius: 12px; background: #f1f2eb; cursor: pointer; }
+      .file-drop svg { width: 28px; height: 28px; flex: none; color: var(--terracotta); }
+      .file-drop-copy { min-width: 0; flex: 1; }
+      .file-drop-copy strong, .file-drop-copy small { display: block; }
+      .file-drop-copy strong { font-size: .82rem; }
+      .file-drop-copy small { margin-top: 4px; color: var(--ink-soft); font-size: .7rem; line-height: 1.35; }
+      .file-pick-label { padding: 8px 10px; border: 1px solid var(--ink); border-radius: 8px; color: var(--ink); background: var(--paper-white); font-size: .73rem; font-weight: 700; white-space: nowrap; }
+      .file-drop:hover .file-pick-label { color: white; background: var(--ink); }
+      #reference-files { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .file-list { min-height: 20px; margin: 8px 0 0; color: var(--ink-soft); font-size: .74rem; line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; }
+      .clear-files { margin: 1px 0 0; padding: 5px 0; border: 0; color: var(--terracotta); background: transparent; font-size: .73rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+      .document-note { margin: 11px 0 15px !important; padding: 10px 11px; border-left: 3px solid var(--terracotta); border-radius: 0 8px 8px 0; color: #505a50 !important; background: var(--terracotta-pale); font-size: .74rem !important; }
+      #context-preview { min-height: 112px; color: #49554a; background: #efefe8 !important; font-family: Consolas, "Courier New", monospace !important; font-size: .74rem !important; }
+      .copy-context { width: 100%; min-height: 43px; margin-top: 9px; border: 1px solid var(--ink); border-radius: 9px; color: white; background: var(--ink); font-size: .82rem; font-weight: 700; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+      .copy-context:hover { transform: translateY(-1px); background: #285441; }
+      #context-status { min-height: 19px; margin: 7px 0 0; color: var(--ink-soft); font-size: .74rem; line-height: 1.4; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .usage-strip { margin: 24px 0 0; padding: 17px 2px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: .82rem; line-height: 1.5; }
+      .usage-strip p { max-width: 82ch; margin: 0; }
+      .footer-link { flex: none; color: var(--ink); text-underline-offset: 4px; }
+      #datos { padding: 24px 0 44px; scroll-margin-top: 18px; }
+      #datos h2 { margin: 0 0 8px; font: 500 1.6rem/1.2 Georgia, "Times New Roman", serif; }
+      #datos p { max-width: 84ch; margin: 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.65; }
+      #chat-state { min-height: 0; }
       #status:empty { display: none; }
-      #status:not(:empty) { max-width: 680px; margin: 12vh auto; padding: 24px; font-size: 1.1rem; line-height: 1.6; text-align: center; }
-      #datos { display: none; max-width: 880px; margin: 24px auto; padding: 24px; line-height: 1.7; scroll-margin-top: 24px; }
-      #datos:target { display: block; }
-      #datos h2 { font-family: Georgia, serif; font-size: 2rem; font-weight: 500; }
-      #datos a { color: #18392d; text-underline-offset: 4px; }
-      @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-      @media (max-width: 600px) { #availability { padding: 12px 16px; font-size: .875rem; } .hotspot:focus-visible { outline-offset: 1px; } }
+      #status:not(:empty) { margin: 10px 0 0; color: var(--ink); font-size: .86rem; line-height: 1.5; }
+      #status.error { color: #773f2e; }
+      @media (max-width: 1080px) {
+        .page-shell { width: min(100% - 36px, 960px); }
+        .top-grid { grid-template-columns: minmax(220px, .9fr) minmax(360px, 1.35fr); }
+        .side-stack { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
+        .side-tile { min-height: 150px; }
+      }
+      @media (max-width: 820px) {
+        .prep-grid { grid-template-columns: 1fr; }
+        .prep-heading { align-items: flex-start; flex-wrap: wrap; gap: 11px 18px; }
+        .prep-heading-main { flex-basis: 100%; }
+        .prep-summary-copy { flex: 1 1 260px; }
+        .prep-toggle { min-width: 0; margin-left: auto; }
+      }
+      @media (max-width: 700px) {
+        .page-shell { width: min(100% - 28px, 560px); }
+        .site-header { min-height: 68px; }
+        .brand-name { font-size: 1.12rem; }
+        .brand-subtitle { font-size: .59rem; }
+        .site-nav a:not(.nav-cta) { display: none; }
+        .site-nav .nav-cta { padding: 10px 13px; font-size: .8rem; }
+        .mosaic-intro { padding-top: 14px; }
+        .top-grid { grid-template-columns: 1fr; gap: 12px; }
+        .intro-card { min-height: 320px; padding: 28px; }
+        h1 { max-width: 10ch; font-size: clamp(2.8rem, 12vw, 4rem); }
+        .launch-card { min-height: 390px; padding: 22px; }
+        .side-stack { grid-column: auto; gap: 12px; }
+        .side-tile { min-height: 160px; padding: 17px; }
+        .tile-title { font-size: 1.35rem; }
+        .bottom-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+        .bottom-tile { min-height: 100px; padding: 15px 17px; }
+        .insight-carousel { margin-top: 20px; }
+        .insight-copy p { font-size: .94rem; }
+        .tool-launch { align-items: flex-start; }
+        .tool-launch .bottom-icon { width: 41px; height: 41px; }
+        .tool-launch h2 { font-size: 1.16rem; }
+        .prep-section { margin-top: 12px; padding: 19px 16px; }
+        .prep-heading { gap: 12px; }
+        .prep-title { font-size: 2rem; }
+        .prep-summary-copy { flex-basis: 100%; }
+        .prep-toggle { justify-content: flex-start; margin-left: 0; text-align: left; }
+        .context-panel { padding: 14px; }
+        .tip-grid { grid-template-columns: 1fr; }
+        .tip-card { min-height: 0; }
+        .file-drop { align-items: flex-start; flex-wrap: wrap; }
+        .file-pick-label { margin-left: 39px; }
+        .usage-strip { flex-direction: column; gap: 8px; margin-top: 18px; }
+      }
+      @media (max-width: 390px) {
+        .site-nav .nav-cta { padding: 9px 10px; font-size: .74rem; }
+        .brand-mark { width: 31px; }
+        .brand-name { font-size: 1rem; }
+        .side-tile { min-height: 150px; padding: 14px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+        .card:hover, .task-option:hover, .task-option:focus-visible, .tip-card:hover, .copy-context:hover, .insight-control:hover, .dialog-primary:hover { transform: none !important; }
+      }
     </style>
   </head>
   <body>
-    <main id="inicio" aria-labelledby="title">
-      <section id="consent-gate" aria-labelledby="title">
-        <div class="cover">
-        <img class="cover-art" src="portada-tutor-v1.png" width="1536" height="1024" alt="" aria-hidden="true" fetchpriority="high">
-        <div class="sr-only">
-          <p>Prototipo académico · Tutor conversacional de pensamiento crítico</p>
-          <h1 id="title">Tu pregunta es el punto de partida.</h1>
-          <p>Explora ideas, resuelve tareas y contrasta razones con ayuda de la inteligencia artificial. A tu ritmo. Con tu propio criterio.</p>
-          <h2>Tú decides si continuar</h2>
-          <p>Este prototipo académico conecta con un tutor conversacional de demostración.</p>
-          <p>No incluyas datos personales ni información sensible.</p>
-          <p>La IA puede equivocarse. El tutor no asigna notas ni realiza diagnósticos.</p>
-          <p>Al aceptar, se cargará el chat y Botpress procesará los mensajes que escribas. Antes de aceptar, el chat no se carga.</p>
-          <p>Usa preguntas inventadas. Esta decisión permite iniciar la demostración; no autoriza investigación ni seguimiento de tus respuestas.</p>
+    <main id="inicio" class="page-shell" aria-labelledby="title">
+      <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="Tutor conversacional, inicio">
+          <svg class="brand-mark" viewBox="0 0 48 40" aria-hidden="true">
+            <path d="M4 7c8-3 14-2 20 2v25c-6-4-12-5-20-2V7Z" fill="#18392d"/>
+            <path d="M44 7c-8-3-14-2-20 2v25c6-4 12-5 20-2V7Z" fill="#b95434"/>
+            <path d="M24 8v26" fill="none" stroke="#f7f4ec" stroke-width="1.5"/>
+          </svg>
+          <span><span class="brand-name">Tutor conversacional</span><span class="brand-subtitle">Proyecto académico · IA en Educación</span></span>
+        </a>
+        <nav class="site-nav" aria-label="Navegación principal">
+          <a href="#explora">Qué puedes explorar</a>
+          <a href="#prepara">Prepara tu sesión</a>
+          <a class="nav-cta" href="#prepara">Explorar actividades <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+
+      <section id="question-mosaic" class="mosaic-intro" aria-label="Explora y conversa">
+        <div class="top-grid">
+          <article id="explora" class="card intro-card">
+            <p class="eyebrow">Pensamiento crítico</p>
+            <h1 id="title">Haz mejores preguntas.</h1>
+            <p class="intro-copy">Explora ideas, contrasta razones y piensa con más claridad.</p>
+            <div class="insight-carousel" aria-label="Frases y tips de pensamiento crítico">
+              <button id="insight-prev" class="insight-control" type="button" aria-label="Frase o tip anterior">‹</button>
+              <div class="insight-copy" aria-live="polite" aria-atomic="true">
+                <span id="insight-kind" class="insight-kind">Frase para pensar</span>
+                <p id="insight-text">Una pregunta abre caminos.</p>
+              </div>
+              <button id="insight-next" class="insight-control" type="button" aria-label="Siguiente frase o tip">›</button>
+              <span id="insight-count" aria-hidden="true">1 / 4</span>
+            </div>
+          </article>
+
+          <section id="tutor-demo" class="card launch-card" aria-labelledby="chat-card-title">
+            <header class="bot-card-header">
+              <span class="bot-avatar" aria-hidden="true">
+                <svg width="27" height="27" viewBox="0 0 32 32" fill="none">
+                  <path d="M16 25V12m0 3c-5 0-8-3-8-7 5 0 8 3 8 7Zm0 4c5 0 8-3 8-7-5 0-8-3-8 7Z" stroke="#18392d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="16" cy="16" r="14.5" stroke="#18392d" stroke-opacity=".18"/>
+                </svg>
+              </span>
+              <span><h2 id="chat-card-title">Tutor</h2><p>Una guía para pensar</p></span>
+            </header>
+            <div class="bot-card-body">
+              <p class="eyebrow">Vista de muestra</p>
+              <h3>¿Qué te gustaría comprender hoy?</h3>
+              <p>Explora preguntas, contrasta razones y practica distintas formas de analizar una idea.</p>
+              <ul class="topic-list" aria-label="Ejemplos para explorar">
+                <li>Una idea</li><li>Un argumento</li><li>Un tema de clase</li>
+              </ul>
+            </div>
+            <div class="launch-actions"><a class="preview-action" href="#prepara">Explorar actividades <span aria-hidden="true">→</span></a></div>
+            <p class="use-note">El chat en vivo no está habilitado en esta vista. Puedes probar el analizador y la autoevaluación sin enviar tu texto a un servicio.</p>
+          </section>
+
+          <aside class="side-stack" aria-label="Ideas para empezar">
+            <article class="card side-tile tile-terracotta">
+              <svg class="tile-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <path d="M13 25c0-1.8-5-5.2-5-11a12 12 0 0 1 24 0c0 5.8-5 9.2-5 11H13Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M14 29h12m-10 4h8M20 1v4m17 9h-4M7 14H3m29-9-3 3M8 5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <div><h2 class="tile-title">Ideas más claras.</h2><p>Pregunta, conecta, comprende.</p></div>
+            </article>
+            <article class="card side-tile tile-sage">
+              <svg class="tile-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <path d="M8 31c1-14 9-22 24-23-1 14-9 22-24 23Z" stroke="#18392d" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M8 31c5-7 11-12 20-17" stroke="#18392d" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M4 36h32" stroke="#b95434" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <div><h2 class="tile-title">Otras perspectivas.</h2><p>Contrasta, no solo confirmes.</p></div>
+            </article>
+          </aside>
         </div>
-        <div class="actions" role="group" aria-label="Decide si deseas iniciar el chat">
-          <button id="accept" class="hotspot" type="button" aria-describedby="availability" aria-label="Acepto y continúo">Acepto y continúo</button>
-          <button id="decline" class="hotspot" type="button" aria-label="No, salir">No, salir</button>
+
+        <div class="bottom-grid" aria-label="Formas de pensar">
+          <article class="card bottom-tile tool-launch">
+            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M3 6c4-1 7 0 11 2v16c-4-2-7-3-11-2V6Zm22 0c-4-1-7 0-11 2v16c4-2 7-3 11-2V6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <span class="tile-copy"><h2>Analizador de preguntas.</h2><p>Revisa claridad, foco y señales de razonamiento.</p><button id="question-analyzer-launch" class="tool-action" type="button">Analizar mi pregunta ↗</button></span>
+          </article>
+          <article class="card bottom-tile tool-launch">
+            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M14 3c-5.5 0-9 3.8-9 9.2 0 4.1 2.2 6 4.6 7.5.9.6 1.4 1.3 1.4 2.3h6c0-1 .5-1.7 1.4-2.3 2.4-1.5 4.6-3.4 4.6-7.5C23 6.8 19.5 3 14 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M11 25h6m-5-9-2-3 3-2 2 2 3-1" stroke="#b95434" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="tile-copy"><h2>Evalúa tu criterio.</h2><p>Reflexiona sobre evidencia, supuestos y perspectivas.</p><button id="criteria-evaluator-launch" class="tool-action" type="button">Hacer autoevaluación ↗</button></span>
+          </article>
+          <article class="card bottom-tile">
+            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><circle cx="5" cy="21" r="2.3" fill="#b95434"/><circle cx="14" cy="7" r="2.3" fill="#87977c"/><circle cx="23" cy="18" r="2.3" fill="#18392d"/><path d="m6.5 19.3 6-10m3.4-.2 5.4 7.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span><h2>Pensar es un proceso.</h2><p>Pregunta, analiza y construye.</p></span>
+          </article>
         </div>
-        <a id="data-link" class="hotspot" href="#datos" aria-label="Cómo se usan los datos">Cómo se usan los datos</a>
-        </div>
-        <p id="availability" class="error" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+
+        <dialog id="question-analyzer-dialog" class="tool-dialog" aria-labelledby="question-dialog-title">
+          <header class="dialog-heading">
+            <div><p class="eyebrow">Revisión orientativa</p><h2 id="question-dialog-title">¿Qué tan sólida es tu pregunta?</h2></div>
+            <button id="close-question-analyzer" class="dialog-close" type="button" aria-label="Cerrar analizador">×</button>
+          </header>
+          <p>Escríbela y revisa cuatro señales: que abra una indagación, tenga un foco manejable, invite a razonar y pida sustento.</p>
+          <label for="question-input">Tu pregunta</label>
+          <textarea id="question-input" placeholder="¿Qué razones sostienen esta idea y qué otra perspectiva podría explicar el tema?"></textarea>
+          <button id="analyze-question" class="dialog-primary" type="button">Analizar pregunta</button>
+          <ul class="question-rubric" aria-label="Criterios visibles de revisión">
+            <li id="criterion-question" data-met="false">○ Formula una pregunta abierta.</li>
+            <li id="criterion-focus" data-met="false">○ Mantiene un foco manejable: 6–32 palabras y una sola pregunta.</li>
+            <li id="criterion-reasoning" data-met="false">○ Invita a explicar o contrastar.</li>
+            <li id="criterion-support" data-met="false">○ Pide razones, evidencia, ejemplos o perspectivas.</li>
+          </ul>
+          <p id="question-result" class="result-panel" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+          <p class="dialog-note">La revisión ocurre en esta página y no envía tu texto al tutor. El resultado se basa en señales simples de forma y palabras clave; es una guía, no una nota ni un juicio sobre la calidad de tus ideas.</p>
+        </dialog>
+
+        <dialog id="criteria-evaluator-dialog" class="tool-dialog" aria-labelledby="criteria-dialog-title">
+          <header class="dialog-heading">
+            <div><p class="eyebrow">Pausa para reflexionar</p><h2 id="criteria-dialog-title">¿Cómo pusiste en práctica tu criterio?</h2></div>
+            <button id="close-criteria-evaluator" class="dialog-close" type="button" aria-label="Cerrar autoevaluación">×</button>
+          </header>
+          <p>Marca los pasos que sí usaste al pensar en tu pregunta. El balance te sugiere qué podrías probar después.</p>
+          <fieldset id="criteria-evaluator-form" class="criteria-checklist">
+            <legend>Al revisar mi pregunta…</legend>
+            <label><input id="criterion-evidence" type="checkbox">Busqué razones o evidencia que sostengan una respuesta.</label>
+            <label><input id="criterion-assumptions" type="checkbox">Identifiqué qué supuesto podría estar dando por hecho.</label>
+            <label><input id="criterion-perspectives" type="checkbox">Consideré otra explicación o perspectiva.</label>
+            <label><input id="criterion-conclusion" type="checkbox">Revisé si la conclusión se sigue de las razones.</label>
+          </fieldset>
+          <button id="evaluate-criteria" class="dialog-primary" type="button">Ver mi balance</button>
+          <p id="criteria-result" class="result-panel" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+          <p class="dialog-note">Esta autoevaluación no mide tu capacidad ni pone una nota. Sirve para elegir el próximo paso de tu razonamiento.</p>
+        </dialog>
+
+        <section id="prepara" class="card prep-section" aria-labelledby="prep-title">
+          <details class="prep-disclosure">
+            <summary class="prep-heading" aria-controls="prep-content">
+              <span class="prep-heading-main">
+                <span class="eyebrow">Prepara tu conversación</span>
+                <span id="prep-title" class="prep-title">Llega con una idea. Sal con más claridad.</span>
+              </span>
+              <span class="prep-summary-copy">Elige una actividad, ajusta tu objetivo y reúne aquí las referencias que te ayudarán a pensar.</span>
+              <span class="prep-toggle">
+                <span class="prep-toggle-closed">Ver actividades y contexto</span>
+                <span class="prep-toggle-open">Ocultar actividades y contexto</span>
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4.5 7.5 5.5 5 5.5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+
+          <div class="prep-grid" id="prep-content">
+            <div class="prep-column">
+              <h3>¿Qué quieres hacer?</h3>
+              <div class="task-options" role="group" aria-label="Tareas para iniciar una conversación">
+                <button class="task-option" id="task-understand" type="button" data-task-title="Comprender un tema" data-objective="Quiero comprender [tema]. Ayúdame a identificar sus conceptos clave y dame un ejemplo." aria-pressed="false">
+                  <span class="task-number" aria-hidden="true">01</span>
+                  <span class="task-copy"><strong>Comprender un tema</strong><small>Aclara conceptos y encuentra un ejemplo útil.</small></span>
+                  <span class="task-arrow" aria-hidden="true">↗</span>
+                </button>
+                <button class="task-option" id="task-analyze" type="button" data-task-title="Analizar un argumento" data-objective="Quiero analizar este argumento: [idea]. Ayúdame a separar sus razones, supuestos y conclusión." aria-pressed="false">
+                  <span class="task-number" aria-hidden="true">02</span>
+                  <span class="task-copy"><strong>Analizar un argumento</strong><small>Separa razones, supuestos y conclusiones.</small></span>
+                  <span class="task-arrow" aria-hidden="true">↗</span>
+                </button>
+                <button class="task-option" id="task-contrast" type="button" data-task-title="Contrastar perspectivas" data-objective="Quiero comparar distintas perspectivas sobre [tema]. Presenta razones y evidencia para cada una." aria-pressed="false">
+                  <span class="task-number" aria-hidden="true">03</span>
+                  <span class="task-copy"><strong>Contrastar perspectivas</strong><small>Compara razones y evidencia desde varios lados.</small></span>
+                  <span class="task-arrow" aria-hidden="true">↗</span>
+                </button>
+              </div>
+
+              <aside class="tips-panel" aria-labelledby="tips-title">
+                <h3 id="tips-title">Tres tips para conversar</h3>
+                <div class="tip-grid">
+                  <article class="tip-card"><span>01 · Delimita</span><p>Haz una pregunta concreta a la vez.</p></article>
+                  <article class="tip-card"><span>02 · Profundiza</span><p>Pide razones, ejemplos o contraejemplos.</p></article>
+                  <article class="tip-card"><span>03 · Reflexiona</span><p>Cierra con lo que cambió en tu idea.</p></article>
+                </div>
+              </aside>
+            </div>
+
+            <div class="context-panel" aria-labelledby="context-title">
+              <h3 id="context-title">Dale contexto a tu pregunta</h3>
+              <p>Edita el objetivo y añade las notas que quieras llevar al chat.</p>
+
+              <div class="field-group">
+                <label class="field-label" for="objective">Mi objetivo</label>
+                <textarea id="objective" rows="3" placeholder="¿Qué quieres entender, comparar o analizar?"></textarea>
+                <small class="field-help">Las tarjetas de tareas proponen un punto de partida; puedes cambiarlo.</small>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="context-details">Notas o fragmento de lectura</label>
+                <textarea id="context-details" rows="4" placeholder="Pega un resumen breve o anota qué te gustaría tener presente."></textarea>
+              </div>
+
+              <div class="field-group">
+                <span class="field-label">Documentos de referencia</span>
+                <label class="file-drop" for="reference-files">
+                  <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 19V5m0 0L8.5 10.5M14 5l5.5 5.5M5 17v5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span class="file-drop-copy"><strong>Añade archivos para tenerlos a mano</strong><small>PDF, Word, texto o imagen. Se muestran solo en esta página.</small></span>
+                  <span class="file-pick-label" aria-hidden="true">Elegir archivos</span>
+                  <input id="reference-files" type="file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple aria-label="Elegir documentos de referencia">
+                </label>
+                <p id="file-list" class="file-list" aria-live="polite">Todavía no has añadido documentos.</p>
+                <button id="clear-files" class="clear-files" type="button" hidden>Quitar documentos</button>
+                <p class="document-note">El tutor no puede abrir ni leer el contenido de estos archivos, y no se cargan ni se envían. Al copiar el contexto solo incluirás sus nombres. Si quieres compartir una idea, pega aquí un resumen o fragmento.</p>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="context-preview">Contexto para llevar a tu conversación</label>
+                <textarea id="context-preview" rows="5" readonly aria-describedby="context-status"></textarea>
+                <button id="copy-context" class="copy-context" type="button">Copiar contexto</button>
+                <p id="context-status" role="status" aria-live="polite" aria-atomic="true"></p>
+              </div>
+            </div>
+          </div>
+          </details>
+        </section>
       </section>
-      <section id="datos" aria-labelledby="data-title">
-        <h2 id="data-title">Cómo se usan tus mensajes</h2>
-        <p>Al aceptar, esta página carga el Webchat de Botpress. Botpress procesa los mensajes que envíes. No incluyas datos personales ni información sensible.</p>
-        <p>Esta página no guarda tu elección ni tus mensajes en el navegador. Usa únicamente preguntas ficticias para probar el prototipo.</p>
-        <p>La decisión de iniciar el chat no autoriza al equipo a analizar tus respuestas para investigación o seguimiento.</p>
-        <a href="#inicio">Volver al inicio</a>
-      </section>
-      <section id="chat-state" aria-live="polite" aria-atomic="true">
-        <p id="status" role="status"></p>
+
+      <section id="datos" class="usage-strip" aria-labelledby="data-title">
+        <h2 id="data-title" class="sr-only">Sobre esta muestra</h2>
+        <p>Esta muestra incluye herramientas que funcionan en tu navegador. La conversación con IA no está habilitada en esta vista.</p>
+        <a class="footer-link" href="#inicio">Volver al inicio ↑</a>
       </section>
     </main>
 
     <script>
       (() => {
-// Candidate copied from the recovered bot's read-only Botpress Deploy Settings.
-const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/20261022204512-SPI9IIB0.js";
-      const EXPECTED_BOT_ID = "b5ee6e0a-2956-4558-9f4c-0881ac4a1d61";
-      // Academic demo mode skips the institutional approval record; every Webchat load still waits for a trusted consent click.
-      const ACADEMIC_DEMO_MODE = true;
-      const CHANNEL_APPROVAL = null;
-      const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
-      const LOAD_TIMEOUT_MS = 15000;
-      const SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS = 3;
-      const SUBSCRIPTION_CLEANUP_RETRY_DELAY_MS = 1000;
+      const insights = [
+        { kind: "Frase para pensar", text: "Una pregunta abre caminos." },
+        { kind: "Tip de pensamiento crítico", text: "Distingue los hechos de las interpretaciones." },
+        { kind: "Tip de pensamiento crítico", text: "Pregunta qué evidencia podría cambiar tu conclusión." },
+        { kind: "Frase para pensar", text: "Considera otra perspectiva antes de decidir." }
+      ];
+      const insightKind = document.getElementById("insight-kind");
+      const insightText = document.getElementById("insight-text");
+      const insightCount = document.getElementById("insight-count");
+      let insightIndex = 0;
+      function renderInsight() {
+        const insight = insights[insightIndex];
+        insightKind.textContent = insight.kind;
+        insightText.textContent = insight.text;
+        insightCount.textContent = `${insightIndex + 1} / ${insights.length}`;
+      }
+      document.getElementById("insight-prev").addEventListener("click", () => {
+        insightIndex = (insightIndex + insights.length - 1) % insights.length;
+        renderInsight();
+      });
+      document.getElementById("insight-next").addEventListener("click", () => {
+        insightIndex = (insightIndex + 1) % insights.length;
+        renderInsight();
+      });
 
-      const gate = document.getElementById("consent-gate");
-      const acceptButton = document.getElementById("accept");
-      const declineButton = document.getElementById("decline");
-      const status = document.getElementById("status");
-      const availability = document.getElementById("availability");
-      let state = "idle";
-      let attemptId = 0;
-      let loadTimeout = null;
-      let injectorState = "not-started";
-      let injectorScriptId = 0;
-      let injectorScript = null;
-      let injectorMissingApi = false;
-      let configScript = null;
-      let configScriptAttemptId = null;
-      let botpressInitBase = null;
-      let botpressInitGuard = null;
-      const initializedSubscriptions = new Set();
-
-      function isAllowedConfigScriptUrl(value) {
-        try {
-          const url = new URL(value);
-          return url.protocol === "https:" &&
-            url.hostname === "files.bpcontent.cloud" &&
-            url.port === "" &&
-            url.username === "" &&
-            url.password === "" &&
-            url.pathname.endsWith(".js");
-        } catch {
-          return false;
+      const questionDialog = document.getElementById("question-analyzer-dialog");
+      const questionInput = document.getElementById("question-input");
+      const questionResult = document.getElementById("question-result");
+      const questionCriteria = [
+        { id: "criterion-question", label: "Formula una pregunta abierta." },
+        { id: "criterion-focus", label: "Mantiene un foco manejable: 6–32 palabras y una sola pregunta." },
+        { id: "criterion-reasoning", label: "Invita a explicar o contrastar." },
+        { id: "criterion-support", label: "Pide razones, evidencia, ejemplos o perspectivas." }
+      ].map(item => ({ ...item, element: document.getElementById(item.id) }));
+      document.getElementById("question-analyzer-launch").addEventListener("click", () => {
+        questionDialog.showModal();
+        questionInput.focus();
+      });
+      document.getElementById("close-question-analyzer").addEventListener("click", () => questionDialog.close());
+      document.getElementById("analyze-question").addEventListener("click", () => {
+        const question = questionInput.value.trim();
+        if (!question) {
+          questionResult.hidden = false;
+          questionResult.textContent = "Escribe tu pregunta para iniciar la revisión.";
+          questionInput.focus();
+          return;
         }
-      }
-
-      function hasVerifiedChannelApproval() {
-        const approval = CHANNEL_APPROVAL;
-        if (!approval || approval.verified !== true) return false;
-        if (approval.botId !== EXPECTED_BOT_ID || approval.configScriptUrl !== CONFIG_SCRIPT_URL) return false;
-        if (typeof approval.channelId !== "string" || approval.channelId.trim() === "") return false;
-        if (!new Set(["synthetic-demo", "authorized-pilot"]).has(approval.audience)) return false;
-        if (typeof approval.evidenceRef !== "string" || approval.evidenceRef.trim() === "") return false;
-        if (typeof approval.verifiedAt !== "string" ||
-          !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(approval.verifiedAt) ||
-          Number.isNaN(Date.parse(approval.verifiedAt))) return false;
-        if (approval.audience === "authorized-pilot" &&
-          (typeof approval.institutionalApprovalRef !== "string" || approval.institutionalApprovalRef.trim() === "")) return false;
-        return true;
-      }
-
-      function getConfigurationError() {
-        if (CONFIG_SCRIPT_URL.startsWith("REEMPLAZAR_")) {
-          return "Prototipo académico: falta configurar el canal Webchat de demostración.";
-        }
-        if (!isAllowedConfigScriptUrl(CONFIG_SCRIPT_URL)) {
-          return "No se inició el chat: la URL de configuración debe usar HTTPS y pertenecer a files.bpcontent.cloud.";
-        }
-        if (!ACADEMIC_DEMO_MODE && !hasVerifiedChannelApproval()) {
-          return "No se puede iniciar el chat sin verificar el canal Webchat.";
-        }
-        return null;
-      }
-
-      const configurationError = getConfigurationError();
-      if (configurationError) {
-        acceptButton.disabled = true;
-        availability.hidden = false;
-        availability.textContent = configurationError;
-      }
-
-      function setStatus(message, isError = false) {
-        status.textContent = message;
-        status.classList.toggle("error", isError);
-      }
-
-      function isCurrentAttempt(id) {
-        return state === "loading" && attemptId === id;
-      }
-
-      function hasBotpressApi() {
-        return Boolean(window.botpress) &&
-          typeof window.botpress.init === "function" &&
-          typeof window.botpress.on === "function" &&
-          typeof window.botpress.open === "function";
-      }
-
-      function clearLoadTimeout() {
-        if (loadTimeout !== null) {
-          clearTimeout(loadTimeout);
-          loadTimeout = null;
-        }
-      }
-
-      function discardConfigScript(id) {
-        if (!configScript || configScriptAttemptId !== id) return;
-        const obsoleteScript = configScript;
-        configScript = null;
-        configScriptAttemptId = null;
-        obsoleteScript.onload = null;
-        obsoleteScript.onerror = null;
-        if (typeof obsoleteScript.remove === "function") {
-          obsoleteScript.remove();
-        }
-      }
-
-      function installBotpressInitGuard(id, script) {
-        if (!hasBotpressApi()) return false;
-        const activeApi = window.botpress;
-        const previousBase = botpressInitBase;
-        const reusingFacade = previousBase &&
-          (activeApi === previousBase.proxy || activeApi === previousBase.facade);
-        const api = reusingFacade ? previousBase.api : activeApi;
-        if (!reusingFacade) {
-          botpressInitBase = { api, originalGlobal: activeApi, originalInit: api.init, facade: null, proxy: null };
-        }
-        const base = botpressInitBase;
-        const globalDescriptor = Object.getOwnPropertyDescriptor(window, "botpress");
-        if (!globalDescriptor ||
-          (!globalDescriptor.writable && typeof globalDescriptor.set !== "function" && !globalDescriptor.configurable)) {
-          return false;
-        }
-        const guard = {
-          api,
-          attemptId: id,
-          script,
-          originalGlobal: base.originalGlobal,
-          originalInit: base.originalInit,
-          wrapper: null,
-          facade: null,
-          proxy: null,
-          initInvoked: false
-        };
-        guard.wrapper = function (...args) {
-          if (botpressInitGuard !== guard ||
-            !isCurrentAttempt(guard.attemptId) ||
-            configScript !== guard.script ||
-            configScriptAttemptId !== guard.attemptId ||
-            document.currentScript !== guard.script ||
-            guard.initInvoked) return;
-          if (!args[0] || args[0].botId !== EXPECTED_BOT_ID) {
-            failStartup(guard.attemptId,
-              "La configuración intentó iniciar un bot distinto al de esta demostración. Cierra esta página y no reintentes en esta pestaña.",
-              true);
-            return;
-          }
-          guard.initInvoked = true;
-          return Reflect.apply(guard.originalInit, guard.api, args);
-        };
-        const facade = Object.create(Object.getPrototypeOf(api));
-        Object.defineProperty(facade, "init", {
-          value: guard.wrapper,
-          configurable: false,
-          enumerable: true,
-          writable: false
+        const wordCount = question.split(/\s+/).filter(Boolean).length;
+        const questionMarks = (question.match(/\?/g) || []).length;
+        const hasOpenQuestion = /^(?:¿\s*)?(?:qué|cómo|por qué|para qué|quién|cuál|dónde|cuándo|en qué|de qué manera|hasta qué punto)(?:\s|$|[?!])/i.test(question);
+        const checks = [
+          hasOpenQuestion,
+          wordCount >= 6 && wordCount <= 32 && questionMarks === 1,
+          /\b(por qué|cómo|qué razones|compara|comparar|analiza|analizar|relación|causa|explica|explicar|justifica|justificar|contrasta|contrastar|argumento)\b/i.test(question),
+          /\b(evidencia|evidencias|fuente|fuentes|razón|razones|ejemplo|ejemplos|criterio|supuesto|perspectiva|perspectivas|alternativa|alternativas|contraargumento)\b/i.test(question)
+        ];
+        let score = 0;
+        questionCriteria.forEach((criterion, index) => {
+          const met = checks[index];
+          if (met) score += 1;
+          criterion.element.dataset.met = String(met);
+          criterion.element.textContent = `${met ? "✓" : "○"} ${criterion.label}`;
         });
-        const proxy = new Proxy(facade, {
-          get(target, property) {
-            if (property === "init") return guard.wrapper;
-            const value = Reflect.get(api, property, api);
-            return typeof value === "function" ? value.bind(api) : value;
-          },
-          set(target, property, value) {
-            if (property === "init") return false;
-            return Reflect.set(api, property, value, api);
-          },
-          has(target, property) { return property === "init" || property in api; },
-          ownKeys(target) { return [...new Set([...Reflect.ownKeys(api), "init"])]; },
-          getOwnPropertyDescriptor(target, property) {
-            if (property === "init") return Reflect.getOwnPropertyDescriptor(target, property);
-            const descriptor = Object.getOwnPropertyDescriptor(api, property);
-            return descriptor ? { ...descriptor, configurable: true } : undefined;
-          }
+        const guidance = score === 4
+          ? "Buen punto de partida: abre el análisis y pide razones para sostenerlo."
+          : score >= 2
+            ? "Vas tomando forma. Prueba a delimitar el tema o pedir evidencia y otra perspectiva."
+            : "Puedes fortalecerla: concreta el tema y pregunta por razones, evidencia o explicaciones distintas.";
+        questionResult.hidden = false;
+        questionResult.textContent = `Tu pregunta muestra ${score} de 4 señales de análisis. ${guidance}`;
+      });
+
+      const criteriaDialog = document.getElementById("criteria-evaluator-dialog");
+      const criteriaChecks = [...document.querySelectorAll("#criteria-evaluator-form input[type=checkbox]")];
+      const criteriaResult = document.getElementById("criteria-result");
+      document.getElementById("criteria-evaluator-launch").addEventListener("click", () => criteriaDialog.showModal());
+      document.getElementById("close-criteria-evaluator").addEventListener("click", () => criteriaDialog.close());
+      document.getElementById("evaluate-criteria").addEventListener("click", () => {
+        const checked = criteriaChecks.filter(input => input.checked).length;
+        const guidance = checked >= 3
+          ? "Has considerado varios pasos; comprueba que tu conclusión se desprenda de las razones."
+          : checked >= 1
+            ? "Ya empezaste a revisar tu razonamiento. Prueba contrastar otra perspectiva antes de concluir."
+            : "Empieza por buscar una razón o evidencia y pregúntate qué supuesto la sostiene.";
+        criteriaResult.hidden = false;
+        criteriaResult.textContent = `Has marcado ${checked} de 4 prácticas. ${guidance}`;
+      });
+
+      const taskButtons = [...document.querySelectorAll(".task-option")];
+      const objectiveField = document.getElementById("objective");
+      const contextField = document.getElementById("context-details");
+      const referenceFiles = document.getElementById("reference-files");
+      const fileList = document.getElementById("file-list");
+      const clearFilesButton = document.getElementById("clear-files");
+      const contextPreview = document.getElementById("context-preview");
+      const copyContextButton = document.getElementById("copy-context");
+      const contextStatus = document.getElementById("context-status");
+      let selectedTask = "";
+
+      function getReferenceFileNames() {
+        return Array.from(referenceFiles.files || [], file =>
+          String(file && file.name || "Documento sin nombre")
+            .replace(/[\u0000-\u001f\u007f]/g, " ")
+            .trim()
+            .slice(0, 180) || "Documento sin nombre");
+      }
+
+      function refreshContextPreview() {
+        const names = getReferenceFileNames();
+        contextPreview.value = [
+          `Tarea: ${selectedTask || "Exploración libre"}`,
+          `Objetivo: ${objectiveField.value.trim() || "Por definir"}`,
+          `Contexto: ${contextField.value.trim() || "Sin contexto adicional."}`,
+          `Nombres de documentos (el contenido no se adjunta): ${names.length ? names.join(", ") : "Ninguno."}`
+        ].join("\n");
+        contextStatus.textContent = "";
+      }
+
+      taskButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          selectedTask = button.dataset.taskTitle || "";
+          objectiveField.value = button.dataset.objective || "";
+          taskButtons.forEach(candidate => candidate.setAttribute("aria-pressed", String(candidate === button)));
+          refreshContextPreview();
         });
-        guard.facade = facade;
-        guard.proxy = proxy;
+      });
+
+      objectiveField.addEventListener("input", refreshContextPreview);
+      contextField.addEventListener("input", refreshContextPreview);
+      referenceFiles.addEventListener("change", () => {
+        const names = getReferenceFileNames();
+        fileList.textContent = names.length
+          ? names.map(name => `• ${name}`).join("\n")
+          : "Todavía no has añadido documentos.";
+        clearFilesButton.hidden = names.length === 0;
+        refreshContextPreview();
+      });
+      clearFilesButton.addEventListener("click", () => {
+        referenceFiles.value = "";
+        fileList.textContent = "Todavía no has añadido documentos.";
+        clearFilesButton.hidden = true;
+        refreshContextPreview();
+      });
+
+      copyContextButton.addEventListener("click", async () => {
         try {
-          window.botpress = proxy;
-        } catch {
-          return false;
-        }
-        if (window.botpress !== proxy) return false;
-        base.facade = facade;
-        base.proxy = proxy;
-        botpressInitGuard = guard;
-        return true;
-      }
-
-      function invalidateBotpressInitGuard(id) {
-        if (!botpressInitGuard || (id !== undefined && botpressInitGuard.attemptId !== id)) return false;
-        const initInvoked = botpressInitGuard.initInvoked;
-        botpressInitGuard = null;
-        return initInvoked;
-      }
-
-      function restoreBotpressInitGuard(id) {
-        const guard = botpressInitGuard;
-        if (!guard || guard.attemptId !== id) return false;
-        if (window.botpress !== guard.proxy) return false;
-        try {
-          window.botpress = guard.originalGlobal;
-        } catch {
-          return false;
-        }
-        if (window.botpress !== guard.originalGlobal) return false;
-        botpressInitGuard = null;
-        if (botpressInitBase && botpressInitBase.api === guard.api) botpressInitBase = null;
-        return true;
-      }
-
-      function callUnsubscribe(unsubscribe) {
-        if (typeof unsubscribe !== "function") return true;
-        try {
-          unsubscribe();
-          return true;
-        } catch {
-          // Cleanup must not prevent the consent gate from recovering.
-          return false;
-        }
-      }
-
-      function unsubscribeInitializedListener(id) {
-        for (const subscription of [...initializedSubscriptions]) {
-          if (subscription.attemptId !== id) continue;
-          tryUnsubscribeInitializedSubscription(subscription);
-        }
-      }
-
-      function tryUnsubscribeInitializedSubscription(subscription) {
-        if (!initializedSubscriptions.has(subscription) ||
-          subscription.cleanupAttempts >= SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS) return;
-        if (subscription.retryTimer !== null) {
-          clearTimeout(subscription.retryTimer);
-          subscription.retryTimer = null;
-        }
-        subscription.cleanupAttempts += 1;
-        if (callUnsubscribe(subscription.unsubscribe)) {
-          initializedSubscriptions.delete(subscription);
-          return;
-        }
-        if (subscription.cleanupAttempts < SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS) {
-          subscription.retryTimer = setTimeout(() => {
-            subscription.retryTimer = null;
-            tryUnsubscribeInitializedSubscription(subscription);
-          }, SUBSCRIPTION_CLEANUP_RETRY_DELAY_MS);
-        }
-      }
-
-      function failStartup(id, message, forceClosed = false) {
-        if (!isCurrentAttempt(id)) return;
-        const initMayHaveStarted = invalidateBotpressInitGuard(id);
-        const mustFailClosed = initMayHaveStarted || forceClosed;
-        clearLoadTimeout();
-        state = mustFailClosed ? "failed-closed" : "idle";
-        discardConfigScript(id);
-        unsubscribeInitializedListener(id);
-        gate.hidden = false;
-        acceptButton.disabled = mustFailClosed;
-        declineButton.disabled = mustFailClosed;
-        if (initMayHaveStarted) {
-          setStatus("No se pudo confirmar el inicio. Botpress pudo haber empezado a procesar; cierra esta página y no reintentes en esta pestaña.", true);
-          return;
-        }
-        setStatus(message, true);
-        if (forceClosed) return;
-        acceptButton.focus();
-      }
-
-      function armLoadTimeout(id) {
-        clearLoadTimeout();
-        loadTimeout = setTimeout(() => {
-          failStartup(id, "La conexión agotó el tiempo de espera. Puedes intentarlo de nuevo o salir.");
-        }, LOAD_TIMEOUT_MS);
-      }
-
-      function loadConfiguration(id) {
-        if (!isCurrentAttempt(id)) return;
-        if (configScriptAttemptId === id) return;
-        if (configScriptAttemptId !== null) {
-          discardConfigScript(configScriptAttemptId);
-        }
-        if (!hasBotpressApi()) {
-          failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
-          return;
-        }
-
-        for (const subscription of [...initializedSubscriptions]) {
-          if (subscription.attemptId !== id) {
-            unsubscribeInitializedListener(subscription.attemptId);
+          if (typeof navigator === "undefined" || !navigator.clipboard || typeof navigator.clipboard.writeText !== "function") {
+            throw new Error("Clipboard API unavailable");
           }
-        }
-
-        const script = document.createElement("script");
-        configScript = script;
-        configScriptAttemptId = id;
-        script.src = CONFIG_SCRIPT_URL;
-        script.async = true;
-        if (!installBotpressInitGuard(id, script)) {
-          failStartup(id, "No se pudo proteger el inicio del chat. Puedes intentarlo de nuevo o salir.");
-          return;
-        }
-
-        let unsubscribe;
-        try {
-          unsubscribe = window.botpress.on("webchat:initialized", () => {
-            if (!isCurrentAttempt(id) ||
-              configScript !== script ||
-              configScriptAttemptId !== id ||
-              !botpressInitGuard ||
-              botpressInitGuard.attemptId !== id ||
-              botpressInitGuard.script !== script ||
-              !botpressInitGuard.initInvoked) {
-              unsubscribeInitializedListener(id);
-              return;
-            }
-            try {
-              window.botpress.open();
-            } catch {
-              failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
-              return;
-            }
-            clearLoadTimeout();
-            state = "ready";
-            const initRestored = restoreBotpressInitGuard(id);
-            discardConfigScript(id);
-            setStatus(initRestored
-              ? "El tutor está listo. Evita compartir datos personales o sensibles."
-              : "El tutor está listo, pero no se pudo confirmar la restauración del SDK. Cierra y vuelve a abrir esta página antes de otra sesión.",
-            !initRestored);
-            unsubscribeInitializedListener(id);
-          });
+          await navigator.clipboard.writeText(contextPreview.value);
+          contextStatus.textContent = "Contexto copiado.";
         } catch {
-          failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
-          return;
+          contextStatus.textContent = "No se pudo copiar automáticamente. Selecciona el texto y cópialo manualmente.";
+          contextPreview.focus();
+          contextPreview.select();
         }
+      });
+      refreshContextPreview();
 
-        if (typeof unsubscribe === "function") {
-          const subscription = { attemptId: id, unsubscribe, cleanupAttempts: 0, retryTimer: null };
-          initializedSubscriptions.add(subscription);
-          if (!isCurrentAttempt(id)) tryUnsubscribeInitializedSubscription(subscription);
-        }
-
-        script.onload = () => {
-          if (!isCurrentAttempt(id)) return;
-          // Keep the timeout armed until webchat:initialized confirms startup.
-        };
-        script.onerror = () => {
-          failStartup(id, "No se pudo cargar la configuración del chat. Puedes intentarlo de nuevo o salir.");
-        };
-        armLoadTimeout(id);
-        document.head.appendChild(script);
-      }
-
-      function abandonInjector(scriptId) {
-        if (scriptId !== injectorScriptId) return;
-        const obsoleteScript = injectorScript;
-        injectorScriptId += 1;
-        injectorScript = null;
-        injectorState = "not-started";
-        if (obsoleteScript && typeof obsoleteScript.remove === "function") {
-          obsoleteScript.remove();
-        }
-      }
-
-      function loadBotpressAfterAcceptance(event) {
-        if (!event || event.isTrusted !== true || state !== "idle" || configurationError) return;
-        state = "loading";
-        const id = ++attemptId;
-        acceptButton.disabled = true;
-        declineButton.disabled = true;
-        gate.hidden = true;
-
-        setStatus("Conectando con el tutor…");
-        if (injectorState === "loaded" && hasBotpressApi()) {
-          loadConfiguration(id);
-          return;
-        }
-
-        if (injectorState === "loading" && hasBotpressApi()) {
-          // The API appeared after the previous timeout. Invalidate the
-          // pending tag so its eventual callbacks cannot start a second config.
-          abandonInjector(injectorScriptId);
-          loadConfiguration(id);
-          return;
-        }
-
-        if (injectorMissingApi && hasBotpressApi()) {
-          // Reuse an API that appeared after injector onload reported it missing.
-          injectorMissingApi = false;
-          injectorState = "loaded";
-          loadConfiguration(id);
-          return;
-        }
-
-        if (injectorState === "loading") {
-          // The previous attempt already timed out. Detach it and let this
-          // retry own a fresh request; its callbacks are invalidated below.
-          abandonInjector(injectorScriptId);
-        } else if (injectorState === "loaded") {
-          // A completed injector without the expected API cannot serve retry.
-          abandonInjector(injectorScriptId);
-        }
-
-        const script = document.createElement("script");
-        script.src = INJECT_URL;
-        script.async = true;
-        const scriptId = ++injectorScriptId;
-        injectorScript = script;
-        injectorState = "loading";
-        injectorMissingApi = false;
-        script.onload = () => {
-          if (scriptId !== injectorScriptId) return;
-          if (!hasBotpressApi()) {
-            abandonInjector(scriptId);
-            injectorMissingApi = true;
-            if (state === "loading") {
-              loadConfiguration(attemptId);
-            }
-            return;
-          }
-          injectorState = "loaded";
-          if (state !== "loading") return;
-          const activeAttemptId = attemptId;
-          clearLoadTimeout();
-          loadConfiguration(activeAttemptId);
-        };
-        script.onerror = () => {
-          if (scriptId !== injectorScriptId) return;
-          abandonInjector(scriptId);
-          injectorMissingApi = false;
-          if (state === "loading") {
-            failStartup(attemptId, "No se pudo cargar el chat. Puedes intentarlo de nuevo o salir.");
-          }
-        };
-        armLoadTimeout(id);
-        document.head.appendChild(script);
-      }
-
-      function decline() {
-        if (state !== "idle") return;
-        state = "declined";
-        attemptId += 1;
-        invalidateBotpressInitGuard();
-        clearLoadTimeout();
-        for (const subscription of [...initializedSubscriptions]) {
-          unsubscribeInitializedListener(subscription.attemptId);
-        }
-        if (configScriptAttemptId !== null) {
-          discardConfigScript(configScriptAttemptId);
-        }
-        if (injectorState === "loading") {
-          abandonInjector(injectorScriptId);
-        }
-        injectorMissingApi = false;
-        gate.hidden = true;
-        acceptButton.disabled = true;
-        declineButton.disabled = true;
-        setStatus("No se inició el chat. Puedes cerrar esta página.");
-      }
-
-      acceptButton.addEventListener("click", loadBotpressAfterAcceptance);
-      declineButton.addEventListener("click", decline);
-      })();
-    </script>
+      })();</script>
   </body>
 </html>
-
