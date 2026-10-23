@@ -601,15 +601,30 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       const TUTOR_BOT_SHADOW_STYLES = "\n      .bpWebchat.bpOpen {\n        position: fixed !important;\n        inset: 50% auto auto 50% !important;\n        width: min(440px, calc(100vw - 32px)) !important;\n        height: min(640px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: translate(-50%, -50%) !important;\n        z-index: 2147483000 !important;\n      }\n      .bpWebchat.bpOpen ~ .bpFabWrapper { display: none !important; }\n      @media (max-width: 760px) {\n        .bpWebchat.bpOpen {\n          width: calc(100vw - 24px) !important;\n          height: calc(100dvh - 24px) !important;\n          max-height: calc(100dvh - 24px) !important;\n        }\n      }\n";
 
       function installTutorBotShadowStyles() {
-        const shadowRoot = document.getElementById("fab-root")?.shadowRoot;
-        if (!shadowRoot) throw new Error("Botpress shadow root unavailable");
-        let style = shadowRoot.querySelector("#tutor-centered-chat-styles");
-        if (!style) {
-          style = document.createElement("style");
-          style.id = "tutor-centered-chat-styles";
-          style.textContent = TUTOR_BOT_SHADOW_STYLES;
-          shadowRoot.appendChild(style);
-        }
+        return new Promise((resolve, reject) => {
+          const applyStyles = () => {
+            const shadowRoot = document.getElementById("fab-root")?.shadowRoot;
+            if (!shadowRoot) return false;
+            let style = shadowRoot.querySelector("#tutor-centered-chat-styles");
+            if (!style) {
+              style = document.createElement("style");
+              style.id = "tutor-centered-chat-styles";
+              style.textContent = TUTOR_BOT_SHADOW_STYLES;
+              shadowRoot.appendChild(style);
+            }
+            observer.disconnect();
+            clearTimeout(timeoutId);
+            resolve();
+            return true;
+          };
+          const observer = new MutationObserver(applyStyles);
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+          const timeoutId = setTimeout(() => {
+            observer.disconnect();
+            reject(new Error("Botpress shadow root unavailable"));
+          }, 5000);
+          applyStyles();
+        });
       }
       const CHANNEL_APPROVAL = null;
       const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
@@ -1076,7 +1091,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
 
         let unsubscribe;
         try {
-          unsubscribe = window.botpress.on("webchat:initialized", () => {
+          unsubscribe = window.botpress.on("webchat:initialized", async () => {
             if (!isCurrentAttempt(id) ||
               configScript !== script ||
               configScriptAttemptId !== id ||
@@ -1089,7 +1104,9 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
             }
             try {
               if (typeof window.botpress.config !== "function") throw new Error("Botpress config API unavailable");
-              installTutorBotShadowStyles();
+              await installTutorBotShadowStyles();
+              if (!isCurrentAttempt(id) || configScript !== script || configScriptAttemptId !== id ||
+                !botpressInitGuard || botpressInitGuard.attemptId !== id || !botpressInitGuard.initInvoked) return;
               window.botpress.config({ configuration: TUTOR_BOT_CONFIGURATION });
               window.botpress.on("webchat:opened", () => document.body.classList.add("chat-focused"));
               window.botpress.on("webchat:closed", () => document.body.classList.remove("chat-focused"));
