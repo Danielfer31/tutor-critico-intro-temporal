@@ -412,20 +412,20 @@
             <div class="bot-card-body">
               <p class="eyebrow">Información antes de decidir</p>
               <h3>Lee esto antes de aceptar</h3>
-              <p class="notice-copy">Si el chat estuviera habilitado, los mensajes que escribas se enviarían a Botpress. Algunas preguntas pueden usar búsqueda web y compartir la consulta con ese servicio.</p>
+              <p class="notice-copy">Al aceptar, los mensajes que escribas se envían a Botpress. Algunas preguntas pueden usar búsqueda web y compartir tu consulta con ese servicio. Esta es una demo académica pública.</p>
               <ul class="notice-points" aria-label="Avisos antes de iniciar el chat">
-                <li><strong>Usa solo ejemplos ficticios.</strong> No incluyas nombres, datos personales ni información sensible.</li>
+                <li><strong>Usa solo ejemplos ficticios.</strong> No uses con estudiantes ni datos reales; no incluyas nombres, información personal o contenido sensible.</li>
                 <li>El tutor puede equivocarse; no asigna notas ni realiza diagnósticos.</li>
-                <li>Aceptar el chat no autoriza investigación, análisis ni seguimiento de tus respuestas.</li>
-                <li>No se han verificado las condiciones de conservación o borrado de los servicios externos.</li>
+                <li>Aceptar solo habilita la conversación con Botpress; no autoriza que el equipo del proyecto investigue, analice ni haga seguimiento de tus respuestas.</li>
+                <li>La conservación y el borrado de los datos por Botpress y sus proveedores aún no se han verificado.</li>
               </ul>
             </div>
             <div class="launch-actions" role="group" aria-label="Acceso al tutor">
               <button id="accept" type="button" aria-describedby="availability" disabled>Acepto y quiero abrir el chat</button>
               <button id="decline" type="button">Seguir sin chat</button>
             </div>
-            <p id="availability" role="status" aria-live="polite" aria-atomic="true">El chat está desactivado en este borrador: faltan aprobación documentada del canal, el origen y la audiencia. No envíes datos reales.</p>
-            <p class="use-note">Mientras el chat no esté aprobado, puedes usar las herramientas locales de preparación y reflexión. Esta decisión no se guarda como consentimiento ni autoriza otros usos.</p>
+            <p id="availability" role="status" aria-live="polite" aria-atomic="true">Botpress solo se carga si aceptas. No envíes datos personales, de estudiantes ni información sensible.</p>
+            <p class="use-note">Si eliges “Seguir sin chat”, Botpress no se carga y puedes continuar con las herramientas locales. Esta decisión no se guarda ni autoriza otros usos.</p>
             <div id="chat-state" aria-live="polite" aria-atomic="true"><p id="status" role="status"></p></div>
           </section>
 
@@ -621,18 +621,18 @@
 
       <section id="datos" class="usage-strip" aria-labelledby="data-title">
         <h2 id="data-title" class="sr-only">Sobre el chat</h2>
-        <p>Prototipo académico sin chat habilitado. Si se aprueba el canal, los mensajes que decidas enviar se procesarán mediante Botpress y, cuando corresponda, búsqueda web. La conservación y el borrado de los servicios externos aún no están verificados; usa solo ejemplos ficticios.</p>
+        <p>Demo académica pública. Si aceptas el chat, los mensajes que envíes se procesarán mediante Botpress y algunas consultas podrían compartirse con su servicio de búsqueda web. Usa solo ejemplos ficticios: no incluyas datos personales, de estudiantes ni información sensible. La conservación y el borrado por los servicios externos aún no se han verificado.</p>
         <a class="footer-link" href="#inicio">Volver al inicio ↑</a>
       </section>
     </main>
 
     <script>
       (() => {
-// Deliberately left unconfigured until channel, origin, and audience approval is documented.
-const CONFIG_SCRIPT_URL = "REEMPLAZAR_URL_DE_CONFIGURACION_TRAS_APROBACION";
+// Public academic demo configuration. Botpress still loads only after the visitor accepts.
+const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/20261022204512-SPI9IIB0.js";
       const EXPECTED_BOT_ID = "b5ee6e0a-2956-4558-9f4c-0881ac4a1d61";
-      // The real channel stays disabled until the exact deployment has documented approval.
-      const ACADEMIC_DEMO_MODE = false;
+      // User consent enables this limited academic demo, not institutional approval.
+      const ACADEMIC_DEMO_MODE = true;
       const CHANNEL_APPROVAL = null;
       const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
       const LOAD_TIMEOUT_MS = 15000;
@@ -972,10 +972,10 @@ const CONFIG_SCRIPT_URL = "REEMPLAZAR_URL_DE_CONFIGURACION_TRAS_APROBACION";
 
       function getConfigurationError() {
         if (!ACADEMIC_DEMO_MODE && !hasVerifiedChannelApproval()) {
-          return "El chat está desactivado en este borrador: faltan aprobación documentada del canal, el origen y la audiencia. No se enviarán mensajes.";
+          return "El chat está desactivado para este despliegue. No se enviarán mensajes.";
         }
         if (CONFIG_SCRIPT_URL.startsWith("REEMPLAZAR_")) {
-          return "El chat está desactivado: falta configurar su canal después de aprobarlo.";
+          return "El chat está desactivado: falta configurar una URL válida de Botpress.";
         }
         if (!isAllowedConfigScriptUrl(CONFIG_SCRIPT_URL)) {
           return "No se inició el chat: la URL de configuración debe usar HTTPS y pertenecer a files.bpcontent.cloud.";
