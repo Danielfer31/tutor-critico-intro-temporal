@@ -332,7 +332,55 @@
         *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
         .card:hover, .task-option:hover, .task-option:focus-visible, .tip-card:hover, .copy-context:hover, .insight-control:hover, .dialog-primary:hover { transform: none !important; }
       }
-    </style>
+    
+      body.chat-focused .top-grid {
+        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
+        gap: clamp(18px, 2vw, 24px);
+        transition: grid-template-columns .32s ease, gap .32s ease;
+      }
+      body.chat-focused #explora,
+      body.chat-focused .side-stack {
+        min-height: min(650px, calc(100dvh - 96px));
+      }
+      body.chat-focused #explora { transform: translateX(-8px); }
+      body.chat-focused .side-stack { gap: 18px; transform: translateX(8px); }
+      body.chat-focused .side-tile { min-height: 0; }
+      body.chat-focused .launch-card { visibility: hidden; pointer-events: none; }
+      body.chat-focused .bpWebchat {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        width: min(440px, calc(100vw - 32px)) !important;
+        height: min(640px, calc(100dvh - 48px)) !important;
+        max-height: calc(100dvh - 48px) !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 2147483000 !important;
+      }
+      body.chat-focused .bpFabWrapper { display: none !important; }
+      @media (max-width: 980px) {
+        body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        body.chat-focused .launch-card { display: none; }
+        body.chat-focused #explora,
+        body.chat-focused .side-stack { min-height: 380px; transform: none; }
+      }
+      @media (max-width: 760px) {
+        body.chat-focused .top-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+        body.chat-focused #explora,
+        body.chat-focused .side-stack { min-height: auto; }
+        body.chat-focused .side-stack { grid-template-rows: auto auto; }
+        body.chat-focused .bpWebchat {
+          width: calc(100vw - 24px) !important;
+          height: calc(100dvh - 24px) !important;
+          max-height: calc(100dvh - 24px) !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.chat-focused .top-grid,
+        body.chat-focused .card { transition: none; }
+      }
+</style>
   </head>
   <body>
     <main id="inicio" class="page-shell" aria-labelledby="title">
@@ -377,7 +425,7 @@
                   <circle cx="16" cy="16" r="14.5" stroke="#18392d" stroke-opacity=".18"/>
                 </svg>
               </span>
-              <span><h2 id="chat-card-title">Bot</h2><p>Tu tutor conversacional</p></span>
+              <span><h2 id="chat-card-title">TutorIA</h2><p>Tu tutor conversacional</p></span>
             </header>
             <div class="bot-card-body">
               <p class="eyebrow">Tu espacio de conversación</p>
@@ -567,6 +615,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       const EXPECTED_BOT_ID = "b5ee6e0a-2956-4558-9f4c-0881ac4a1d61";
       // Academic demo mode skips the institutional approval record; every Webchat load still waits for a trusted consent click.
       const ACADEMIC_DEMO_MODE = true;
+      const TUTOR_BOT_CONFIGURATION = Object.freeze({ botName: "TutorIA", color: "#18392d" });
       const CHANNEL_APPROVAL = null;
       const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
       const LOAD_TIMEOUT_MS = 15000;
@@ -1044,6 +1093,10 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
               return;
             }
             try {
+              if (typeof window.botpress.config !== "function") throw new Error("Botpress config API unavailable");
+              window.botpress.config({ configuration: TUTOR_BOT_CONFIGURATION });
+              window.botpress.on("webchat:opened", () => document.body.classList.add("chat-focused"));
+              window.botpress.on("webchat:closed", () => document.body.classList.remove("chat-focused"));
               window.botpress.open();
             } catch {
               failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
