@@ -20,7 +20,9 @@
         --terracotta-pale: #f1dfd5;
         --sand: #eee4d3;
         --line: #d6d0c4;
-        font-family: Arial, sans-serif;
+        --font-body: "Segoe UI", Tahoma, Arial, sans-serif;
+        --font-display: "Trebuchet MS", "Segoe UI", sans-serif;
+        font-family: var(--font-body);
         color: var(--ink);
         background: var(--paper);
       }
@@ -48,7 +50,7 @@
       }
       .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
       .brand-mark { width: 37px; height: 32px; flex: none; }
-      .brand-name { font: 600 1.28rem/1 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+      .brand-name { font: 600 1.28rem/1 var(--font-display); letter-spacing: -.025em; }
       .brand-subtitle { display: block; margin-top: 5px; color: var(--ink-soft); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; }
       .site-nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); }
       .site-nav a { color: var(--ink-soft); font-size: .9rem; text-decoration: none; }
@@ -111,16 +113,18 @@
       }
       .eyebrow { margin: 0 0 14px; color: var(--terracotta); font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
       h1, h2, p { margin-top: 0; }
-      h1, .tile-title, .bottom-tile h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
+      h1, .tile-title, .bottom-tile h2 { font-family: var(--font-display); font-weight: 500; }
       h1 { max-width: 8ch; margin-bottom: 16px; font-size: clamp(2.7rem, 4vw, 4.5rem); line-height: .98; letter-spacing: -.055em; }
       .intro-copy { max-width: 34ch; margin-bottom: 0; color: var(--ink-soft); font-size: 1.02rem; line-height: 1.65; }
-      .insight-carousel { margin-top: 24px; display: grid; grid-template-columns: 30px minmax(0, 1fr) 30px; align-items: center; gap: 9px; }
+      .insight-carousel { margin-top: 24px; display: grid; grid-template-columns: 30px minmax(0, 1fr) 30px auto; align-items: center; gap: 9px; }
       .insight-copy { min-height: 55px; display: flex; flex-direction: column; justify-content: center; }
       .insight-kind { margin-bottom: 4px; color: var(--terracotta); font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-      .insight-copy p { margin: 0; color: var(--ink); font: italic .98rem/1.35 Georgia, "Times New Roman", serif; }
+      .insight-copy p { margin: 0; color: var(--ink); font: italic .98rem/1.35 var(--font-display); }
       .insight-control { width: 30px; height: 30px; padding: 0; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.7); cursor: pointer; transition: transform .2s ease, color .2s ease, border-color .2s ease, background .2s ease; }
       .insight-control:hover { transform: translateY(-1px); border-color: var(--terracotta); color: var(--terracotta); background: white; }
+      .insight-toggle { width: auto; min-width: 56px; height: 30px; padding: 0 8px; border-radius: 999px; font-size: .68rem; font-weight: 700; }
       #insight-count { grid-column: 2; margin-top: -2px; color: #72786e; font-size: .64rem; }
+      .insight-rotation-note { grid-column: 2 / -1; color: #72786e; font-size: .66rem; line-height: 1.35; }
       .launch-card {
         min-height: 380px;
         padding: clamp(22px, 2.5vw, 32px);
@@ -130,8 +134,8 @@
       }
       .bot-card-header { display: flex; align-items: center; gap: 14px; padding-bottom: 19px; border-bottom: 1px solid var(--line); }
       .bot-avatar {
-        width: 46px;
-        height: 46px;
+        width: 56px;
+        height: 56px;
         display: grid;
         flex: none;
         place-items: center;
@@ -139,56 +143,78 @@
         color: var(--ink);
         background: var(--sage);
       }
-      .bot-card-header h2 { margin: 0; font: 500 1.55rem/1.1 Georgia, "Times New Roman", serif; }
+      .bot-avatar img { width: 54px; height: 54px; object-fit: contain; }
+      .bot-card-header h2 { margin: 0; font: 500 1.55rem/1.1 var(--font-display); }
       .bot-card-header p { margin: 4px 0 0; color: var(--ink-soft); font-size: .85rem; }
       .bot-card-body { padding: clamp(22px, 3vw, 36px) 2px 18px; }
-      .bot-card-body h3 { max-width: 19ch; margin: 0 0 10px; font: 500 clamp(1.55rem, 2.4vw, 2.15rem)/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+      .bot-card-body h3 { max-width: 19ch; margin: 0 0 10px; font: 500 clamp(1.55rem, 2.4vw, 2.15rem)/1.12 var(--font-display); letter-spacing: -.025em; }
       .bot-card-body > p { max-width: 50ch; margin-bottom: 18px; color: var(--ink-soft); line-height: 1.55; }
       .topic-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
       .topic-list li { padding: 8px 11px; border: 1px solid #d4dacd; border-radius: 999px; color: #405143; background: #f4f5ef; font-size: .78rem; }
-      .launch-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: auto; }
-      #accept, #decline { min-height: 48px; border-radius: 10px; cursor: pointer; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
-      #accept { min-width: 164px; padding: 0 19px; border: 1px solid var(--ink); color: white; background: var(--ink); font-weight: 700; }
+      .launch-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+      #accept, #decline { min-height: 50px; padding: 10px 14px; border: 1px solid var(--ink); border-radius: 10px; font: inherit; font-size: .86rem; font-weight: 700; line-height: 1.3; text-align: center; cursor: pointer; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+      #accept { color: white; background: var(--ink); }
       #accept::after { display: inline-block; margin-left: 12px; content: "→"; font-size: 1.15rem; }
       #accept:hover:not(:disabled) { background: #285441; transform: translateY(-1px); }
-      #decline { padding: 0 14px; border: 1px solid transparent; color: var(--ink-soft); background: transparent; }
-      #decline:hover:not(:disabled) { border-color: var(--line); background: var(--paper); }
+      #decline { color: var(--ink); background: var(--paper-white); }
+      #decline:hover:not(:disabled) { background: var(--sage); transform: translateY(-1px); }
       #accept:focus-visible, #decline:focus-visible, .site-nav a:focus-visible, .footer-link:focus-visible, summary:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
-      #accept:disabled, #decline:disabled { cursor: default; opacity: .72; }
-      .use-note { margin: 16px 0 0; color: #6f766d; font-size: .75rem; line-height: 1.45; }
-      #availability { margin: 10px 0 0; color: #773f2e; font-size: .85rem; line-height: 1.5; }
+      #accept:disabled { cursor: not-allowed; opacity: .62; }
+      #decline:disabled { cursor: default; opacity: .72; }
+      .notice-copy { margin: 0 0 12px !important; color: var(--ink-soft) !important; font-size: .86rem !important; line-height: 1.55 !important; }
+      .notice-points { margin: 0; padding-left: 19px; display: grid; gap: 7px; color: var(--ink-soft); font-size: .79rem; line-height: 1.45; }
+      .notice-points strong { color: var(--ink); }
+      .use-note { margin: 12px 0 0; color: #555f56; font-size: .78rem; line-height: 1.5; }
+      #availability { margin: 0; padding: 11px 12px; border-left: 3px solid var(--terracotta); border-radius: 0 9px 9px 0; color: #553a30; background: var(--terracotta-pale); font-size: .81rem; line-height: 1.5; }
       .side-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 14px; }
       .side-tile { min-height: 183px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
       .tile-terracotta { border-color: #b95434; color: #fffaf4; background: var(--terracotta); }
       .tile-sage { background: var(--sage); }
-      .tile-icon { width: 38px; height: 38px; }
+      .tile-icon { width: 58px; height: 58px; object-fit: contain; }
       .tile-title { max-width: 10ch; margin: 14px 0 5px; font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.03; letter-spacing: -.025em; }
       .side-tile p { margin: 0; color: inherit; opacity: .82; font-size: .82rem; line-height: 1.45; }
+      .side-tile-trigger { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; border: 0; border-radius: inherit; color: transparent; background: transparent; cursor: pointer; }
+      .tile-terracotta .side-tile-trigger:focus-visible { outline: 3px solid white; outline-offset: -7px; }
+      .tile-sage .side-tile-trigger:focus-visible { outline: 3px solid var(--terracotta); outline-offset: -7px; }
       .bottom-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
       .bottom-tile { min-height: 128px; padding: 20px 22px; display: flex; align-items: center; gap: 16px; }
       .bottom-tile:nth-child(1) { background: #e8ebdf; }
       .bottom-tile:nth-child(2) { background: var(--paper-white); }
       .bottom-tile:nth-child(3) { background: var(--terracotta-pale); }
-      .bottom-icon { width: 48px; height: 48px; display: grid; flex: none; place-items: center; border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.55); }
-      .bottom-icon svg { width: 25px; height: 25px; }
+      .bottom-icon { width: 58px; height: 58px; display: grid; flex: none; place-items: center; border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.55); }
+      .bottom-icon img { width: 56px; height: 56px; object-fit: contain; }
       .bottom-tile h2 { margin: 0 0 5px; font-size: 1.3rem; line-height: 1.05; }
       .bottom-tile p { margin: 0; color: var(--ink-soft); font-size: .82rem; line-height: 1.4; }
       .tool-launch .tile-copy { min-width: 0; }
       .tool-launch h2 { font-size: clamp(1.08rem, 1.4vw, 1.3rem); }
-      .tool-action { margin-top: 9px; padding: 0; border: 0; color: var(--ink); background: transparent; font-size: .75rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--terracotta); text-underline-offset: 4px; cursor: pointer; }
-      .tool-action:hover { color: var(--terracotta); }
-      .tool-action:focus-visible, .insight-control:focus-visible, .dialog-close:focus-visible, .dialog-primary:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      .bottom-tile-trigger { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; border: 0; border-radius: inherit; color: transparent; background: transparent; cursor: pointer; }
+      .bottom-tile-trigger:focus-visible, .insight-control:focus-visible, .dialog-close:focus-visible, .dialog-primary:focus-visible { outline: 3px solid var(--terracotta); outline-offset: -6px; }
       .tool-dialog { width: min(620px, calc(100% - 32px)); max-height: min(88vh, 760px); padding: clamp(22px, 4vw, 34px); overflow: auto; border: 1px solid var(--line); border-radius: 20px; color: var(--ink); background: var(--paper-white); box-shadow: 0 24px 72px rgba(15, 35, 25, .3); }
       .tool-dialog::backdrop { background: rgba(17, 34, 27, .55); backdrop-filter: blur(3px); }
       .tool-dialog[open] { animation: dialog-appear .18s ease-out; }
       @keyframes dialog-appear { from { opacity: 0; transform: translateY(7px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
       .dialog-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
       .dialog-heading .eyebrow { margin-bottom: 8px; }
-      .dialog-heading h2 { margin: 0; font: 500 clamp(1.7rem, 4vw, 2.25rem)/1.08 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
+      .dialog-heading h2 { margin: 0; font: 500 clamp(1.7rem, 4vw, 2.25rem)/1.08 var(--font-display); letter-spacing: -.035em; }
       .tool-dialog > p { margin: 12px 0 18px; color: var(--ink-soft); font-size: .9rem; line-height: 1.55; }
       .dialog-close { width: 38px; height: 38px; flex: none; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: white; font-size: 1.25rem; cursor: pointer; }
       .tool-dialog label { display: block; margin-bottom: 7px; font-size: .83rem; font-weight: 700; }
-      .tool-dialog textarea { width: 100%; min-height: 105px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fffefa; font: .9rem/1.5 Arial, sans-serif; resize: vertical; }
+      .tool-dialog textarea { width: 100%; min-height: 105px; padding: 12px 13px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fffefa; font: .9rem/1.5 var(--font-body); resize: vertical; }
+      .argument-field { margin-top: 13px; }
+      .argument-field textarea { min-height: 72px; }
+      .tool-result { white-space: pre-line; overflow-wrap: anywhere; }
+      .claim-status-options { margin: 17px 0 0; padding: 0; display: grid; gap: 9px; border: 0; }
+      .claim-status-options legend { margin-bottom: 8px; font-size: .84rem; font-weight: 700; }
+      .claim-status-button { width: 100%; min-height: 53px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); text-align: left; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
+      .claim-status-button:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(24,57,45,.08); }
+      .claim-status-button:focus-visible, .board-reset:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+      .claim-status-button strong, .claim-status-button small { display: block; }
+      .claim-status-button strong { font-size: .82rem; }
+      .claim-status-button small { margin-top: 3px; font-size: .72rem; line-height: 1.35; }
+      .claim-status-green { border-color: #9caf94; background: #edf2e8; }
+      .claim-status-yellow { border-color: #d1b45c; background: #faf3d9; }
+      .claim-status-red { border-color: #c9826d; background: #f7e6df; }
+      .board-reset { margin-top: 10px; padding: 7px 0; border: 0; color: var(--ink-soft); background: transparent; font-size: .75rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
       .dialog-primary { min-height: 43px; margin-top: 10px; padding: 0 16px; border: 1px solid var(--ink); border-radius: 9px; color: white; background: var(--ink); font-size: .82rem; font-weight: 700; cursor: pointer; transition: transform .2s ease, background .2s ease; }
       .dialog-primary:hover { transform: translateY(-1px); background: #285441; }
       .dialog-note { margin: 14px 0 0 !important; padding: 10px 12px; border-left: 3px solid var(--sage-deep); color: #505a50 !important; background: var(--sage); font-size: .77rem !important; }
@@ -196,7 +222,7 @@
       .question-rubric li { padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink-soft); background: #f7f5ef; font-size: .8rem; line-height: 1.4; }
       .question-rubric li[data-met="true"] { border-color: #b8c5b1; color: var(--ink); background: #edf1e8; }
       .result-panel { margin-top: 13px; padding: 13px 14px; border: 1px solid #d7dacd; border-radius: 12px; background: var(--sage); }
-      .result-panel h3 { margin: 0 0 5px; font: 600 1rem/1.3 Arial, sans-serif; }
+      .result-panel h3 { margin: 0 0 5px; font: 600 1rem/1.3 var(--font-body); }
       .result-panel p { margin: 0; color: var(--ink-soft); font-size: .82rem; line-height: 1.5; }
       .criteria-checklist { margin: 16px 0 0; padding: 0; display: grid; gap: 8px; border: 0; }
       .criteria-checklist legend { margin-bottom: 9px; font-size: .85rem; font-weight: 700; }
@@ -209,7 +235,7 @@
       .prep-heading:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 5px; border-radius: 8px; }
       .prep-heading-main { min-width: 0; flex: 1; }
       .prep-heading .eyebrow { margin-bottom: 9px; }
-      .prep-title { display: block; max-width: 18ch; font: 500 clamp(1.85rem, 3vw, 2.6rem)/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
+      .prep-title { display: block; max-width: 18ch; font: 500 clamp(1.85rem, 3vw, 2.6rem)/1.05 var(--font-display); letter-spacing: -.04em; }
       .prep-summary-copy { max-width: 40ch; margin: 0 0 2px; color: var(--ink-soft); font-size: .92rem; line-height: 1.55; }
       .prep-toggle { min-width: 194px; display: inline-flex; align-items: center; justify-content: flex-end; gap: 9px; color: var(--ink); font-size: .78rem; font-weight: 700; text-align: right; }
       .prep-toggle-open { display: none; }
@@ -218,7 +244,7 @@
       .prep-disclosure[open] .prep-toggle-open { display: inline; }
       .prep-disclosure[open] .prep-toggle svg { transform: rotate(180deg); }
       .prep-grid { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: 18px; align-items: start; }
-      .prep-column > h3, .context-panel > h3 { margin: 0 0 12px; font: 500 1.24rem/1.2 Georgia, "Times New Roman", serif; }
+      .prep-column > h3, .context-panel > h3 { margin: 0 0 12px; font: 500 1.24rem/1.2 var(--font-display); }
       .task-options { display: grid; gap: 10px; }
       .task-option {
         width: 100%; min-height: 78px; padding: 14px 16px; display: grid; grid-template-columns: 34px minmax(0, 1fr) 20px; align-items: center; gap: 12px;
@@ -241,14 +267,14 @@
       .tip-card span { display: block; margin-bottom: 5px; color: var(--terracotta); font-size: .68rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
       .tip-card p { margin: 0; color: var(--ink-soft); font-size: .77rem; line-height: 1.4; }
       .documents-panel { margin-top: 18px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #f8f7f1; }
-      .documents-panel > h3 { margin: 0 0 12px; font: 500 1.12rem/1.25 Georgia, "Times New Roman", serif; }
+      .documents-panel > h3 { margin: 0 0 12px; font: 500 1.12rem/1.25 var(--font-display); }
       .documents-panel .field-group { margin-top: 0; }
       .context-panel { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #f8f7f1; }
       .context-panel > p { margin: -4px 0 16px; color: var(--ink-soft); font-size: .82rem; line-height: 1.45; }
       .field-group { margin-top: 13px; }
       .field-label { display: block; margin-bottom: 6px; color: var(--ink); font-size: .8rem; font-weight: 700; }
       .field-help { display: block; margin-top: 5px; color: #71776d; font-size: .72rem; line-height: 1.4; }
-      .context-panel textarea { width: 100%; min-height: 78px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fffefa; font: .84rem/1.5 Arial, sans-serif; resize: vertical; }
+      .context-panel textarea { width: 100%; min-height: 78px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #fffefa; font: .84rem/1.5 var(--font-body); resize: vertical; }
       #objective { min-height: 76px; }
       #context-details { min-height: 92px; }
       .file-drop { position: relative; min-height: 78px; padding: 12px; display: flex; align-items: center; gap: 11px; border: 1px dashed #9da897; border-radius: 12px; background: #f1f2eb; cursor: pointer; }
@@ -272,7 +298,7 @@
       .usage-strip p { max-width: 82ch; margin: 0; }
       .footer-link { flex: none; color: var(--ink); text-underline-offset: 4px; }
       #datos { padding: 24px 0 44px; scroll-margin-top: 18px; }
-      #datos h2 { margin: 0 0 8px; font: 500 1.6rem/1.2 Georgia, "Times New Roman", serif; }
+      #datos h2 { margin: 0 0 8px; font: 500 1.6rem/1.2 var(--font-display); }
       #datos p { max-width: 84ch; margin: 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.65; }
       #chat-state { min-height: 0; }
       #status:empty { display: none; }
@@ -303,6 +329,7 @@
         .intro-card { min-height: 320px; padding: 28px; }
         h1 { max-width: 10ch; font-size: clamp(2.8rem, 12vw, 4rem); }
         .launch-card { min-height: 390px; padding: 22px; }
+        .launch-actions { grid-template-columns: 1fr; }
         .side-stack { grid-column: auto; gap: 12px; }
         .side-tile { min-height: 160px; padding: 17px; }
         .tile-title { font-size: 1.35rem; }
@@ -311,7 +338,8 @@
         .insight-carousel { margin-top: 20px; }
         .insight-copy p { font-size: .94rem; }
         .tool-launch { align-items: flex-start; }
-        .tool-launch .bottom-icon { width: 41px; height: 41px; }
+        .tool-launch .bottom-icon { width: 50px; height: 50px; }
+        .tool-launch .bottom-icon img { width: 48px; height: 48px; }
         .tool-launch h2 { font-size: 1.16rem; }
         .prep-section { margin-top: 12px; padding: 19px 16px; }
         .prep-heading { gap: 12px; }
@@ -335,73 +363,7 @@
         *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
         .card:hover, .task-option:hover, .task-option:focus-visible, .tip-card:hover, .copy-context:hover, .insight-control:hover, .dialog-primary:hover { transform: none !important; }
       }
-    
-      body.chat-focused .top-grid {
-        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
-        gap: clamp(18px, 2vw, 24px);
-        transition: grid-template-columns .32s ease, gap .32s ease;
-      }
-      body.chat-focused #explora,
-      body.chat-focused .side-stack {
-        min-height: min(650px, calc(100dvh - 96px));
-      }
-      body.chat-focused #explora { transform: translateX(-8px); }
-      body.chat-focused .side-stack { gap: 18px; transform: translateX(8px); }
-      body.chat-focused .side-tile { min-height: 0; }
-      body.chat-focused .launch-card { visibility: hidden; pointer-events: none; }
-      body.chat-focused .bottom-grid {
-        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
-        gap: clamp(18px, 2vw, 24px);
-      }
-      body.chat-focused .bottom-tile:nth-child(2) { visibility: hidden; }
-      body.chat-scrolled .top-grid {
-        margin-right: 420px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        transition: grid-template-columns .32s ease, margin-right .32s ease;
-      }
-      body.chat-scrolled .launch-card { display: none; }
-      body.chat-scrolled .bottom-grid {
-        margin-right: 420px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        transition: margin-right .32s ease;
-      }
-      body.chat-scrolled .bottom-tile:nth-child(2) { visibility: visible; }
-      body.chat-scrolled #prepara,
-      body.chat-scrolled #datos {
-        margin-right: 420px;
-        transition: margin-right .32s ease;
-      }
-      body.chat-scrolled #prepara .prep-heading {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: 12px 20px;
-      }
-      body.chat-scrolled #prepara .prep-heading-main { grid-column: 1; grid-row: 1 / span 2; }
-      body.chat-scrolled #prepara .prep-summary-copy { grid-column: 2; grid-row: 1; }
-      body.chat-scrolled #prepara .prep-toggle { grid-column: 2; grid-row: 2; justify-self: end; }
-      @media (max-width: 980px) {
-        body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        body.chat-focused .launch-card { display: none; }
-        body.chat-focused .bottom-grid { display: none; }
-        body.chat-focused #explora,
-        body.chat-focused .side-stack { min-height: 380px; transform: none; }
-      }
-      @media (max-width: 760px) {
-        body.chat-focused .top-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-        body.chat-focused #explora,
-        body.chat-focused .side-stack { min-height: auto; }
-        body.chat-focused .side-stack { grid-template-rows: auto auto; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        body.chat-focused .top-grid,
-        body.chat-focused .card,
-        body.chat-scrolled .top-grid,
-        body.chat-scrolled .bottom-grid,
-        body.chat-scrolled #prepara,
-        body.chat-scrolled #datos { transition: none; }
-      }
-</style>
+    </style>
   </head>
   <body>
     <main id="inicio" class="page-shell" aria-labelledby="title">
@@ -417,7 +379,7 @@
         <nav class="site-nav" aria-label="Navegación principal">
           <a href="#explora">Qué puedes explorar</a>
           <a href="#prepara">Prepara tu sesión</a>
-          <a class="nav-cta" href="#tutor-demo">Abrir tutor <span aria-hidden="true">↗</span></a>
+          <a class="nav-cta" href="#consent-gate">Abrir tutor <span aria-hidden="true">↗</span></a>
         </nav>
       </header>
 
@@ -434,70 +396,103 @@
                 <p id="insight-text">Una pregunta abre caminos.</p>
               </div>
               <button id="insight-next" class="insight-control" type="button" aria-label="Siguiente frase o tip">›</button>
+              <button id="insight-toggle" class="insight-control insight-toggle" type="button" aria-controls="insight-text" aria-pressed="false" aria-label="Pausar rotación automática">Pausar</button>
               <span id="insight-count" aria-hidden="true">1 / 4</span>
+              <span class="insight-rotation-note">Pausa con el botón, al pasar el cursor o al usar el teclado; se detiene si el dispositivo reduce movimiento.</span>
             </div>
           </article>
 
-          <section id="tutor-demo" class="card launch-card" aria-labelledby="chat-card-title">
+          <section id="consent-gate" class="card launch-card" aria-labelledby="chat-card-title">
             <header class="bot-card-header">
               <span class="bot-avatar" aria-hidden="true">
-                <svg width="27" height="27" viewBox="0 0 32 32" fill="none">
-                  <path d="M16 25V12m0 3c-5 0-8-3-8-7 5 0 8 3 8 7Zm0 4c5 0 8-3 8-7-5 0-8 3-8 7Z" stroke="#18392d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="16" cy="16" r="14.5" stroke="#18392d" stroke-opacity=".18"/>
-                </svg>
+                <img src="assets/tutor-seedling.webp" width="54" height="54" alt="" decoding="async">
               </span>
-              <span><h2 id="chat-card-title">TutorIA</h2><p>Tu tutor conversacional</p></span>
+              <span><h2 id="chat-card-title">Tutor conversacional</h2><p>Antes de iniciar</p></span>
             </header>
             <div class="bot-card-body">
-              <p class="eyebrow">Tu espacio de conversación</p>
-              <h3>¿Qué te gustaría comprender hoy?</h3>
-              <p>Empieza con una duda, una idea o un argumento. El tutor te ayudará a explorar el tema paso a paso.</p>
-              <ul class="topic-list" aria-label="Ejemplos de temas para conversar">
-                <li>Una idea</li><li>Un argumento</li><li>Un tema de clase</li>
+              <p class="eyebrow">Información antes de decidir</p>
+              <h3>Lee esto antes de aceptar</h3>
+              <p class="notice-copy">Si el chat estuviera habilitado, los mensajes que escribas se enviarían a Botpress. Algunas preguntas pueden usar búsqueda web y compartir la consulta con ese servicio.</p>
+              <ul class="notice-points" aria-label="Avisos antes de iniciar el chat">
+                <li><strong>Usa solo ejemplos ficticios.</strong> No incluyas nombres, datos personales ni información sensible.</li>
+                <li>El tutor puede equivocarse; no asigna notas ni realiza diagnósticos.</li>
+                <li>Aceptar el chat no autoriza investigación, análisis ni seguimiento de tus respuestas.</li>
+                <li>No se han verificado las condiciones de conservación o borrado de los servicios externos.</li>
               </ul>
             </div>
             <div class="launch-actions" role="group" aria-label="Acceso al tutor">
-              <button id="accept" type="button" aria-describedby="availability">Abrir el tutor</button>
-              <button id="decline" type="button">Ahora no</button>
+              <button id="accept" type="button" aria-describedby="availability" disabled>Acepto y quiero abrir el chat</button>
+              <button id="decline" type="button">Seguir sin chat</button>
             </div>
-            <p class="use-note">Al abrir el chat, Botpress procesa los mensajes. Usa preguntas ficticias y evita compartir datos personales.</p>
-            <p id="availability" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+            <p id="availability" role="status" aria-live="polite" aria-atomic="true">El chat está desactivado en este borrador: faltan aprobación documentada del canal, el origen y la audiencia. No envíes datos reales.</p>
+            <p class="use-note">Mientras el chat no esté aprobado, puedes usar las herramientas locales de preparación y reflexión. Esta decisión no se guarda como consentimiento ni autoriza otros usos.</p>
             <div id="chat-state" aria-live="polite" aria-atomic="true"><p id="status" role="status"></p></div>
           </section>
 
           <aside class="side-stack" aria-label="Ideas para empezar">
             <article class="card side-tile tile-terracotta">
-              <svg class="tile-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                <path d="M13 25c0-1.8-5-5.2-5-11a12 12 0 0 1 24 0c0 5.8-5 9.2-5 11H13Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                <path d="M14 29h12m-10 4h8M20 1v4m17 9h-4M7 14H3m29-9-3 3M8 5l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-              <div><h2 class="tile-title">Ideas más claras.</h2><p>Pregunta, conecta, comprende.</p></div>
+              <img class="tile-icon" src="assets/idea-bulb.webp" width="96" height="96" alt="" aria-hidden="true" decoding="async">
+              <div><h2 id="argument-tile-title" class="tile-title">Construye un argumento.</h2><p id="argument-tile-description">Une una afirmación con razones y evidencia.</p></div>
+              <button class="side-tile-trigger" id="argument-builder-launch" type="button" aria-haspopup="dialog" aria-controls="argument-builder-dialog" aria-labelledby="argument-tile-title argument-tile-description"></button>
             </article>
             <article class="card side-tile tile-sage">
-              <svg class="tile-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                <path d="M8 31c1-14 9-22 24-23-1 14-9 22-24 23Z" stroke="#18392d" stroke-width="1.8" stroke-linejoin="round"/>
-                <path d="M8 31c5-7 11-12 20-17" stroke="#18392d" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M4 36h32" stroke="#b95434" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-              <div><h2 class="tile-title">Otras perspectivas.</h2><p>Contrasta, no solo confirmes.</p></div>
+              <img class="tile-icon" src="assets/perspectives-feather.webp" width="96" height="96" alt="" aria-hidden="true" decoding="async">
+              <div><h2 id="claim-tile-title" class="tile-title">Semáforo de afirmaciones.</h2><p id="claim-tile-description">Distingue lo respaldado, lo pendiente y lo cuestionado.</p></div>
+              <button class="side-tile-trigger" id="claim-semaphore-launch" type="button" aria-haspopup="dialog" aria-controls="claim-semaphore-dialog" aria-labelledby="claim-tile-title claim-tile-description"></button>
             </article>
           </aside>
         </div>
 
         <div class="bottom-grid" aria-label="Formas de pensar">
           <article class="card bottom-tile tool-launch">
-            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M3 6c4-1 7 0 11 2v16c-4-2-7-3-11-2V6Zm22 0c-4-1-7 0-11 2v16c4-2 7-3 11-2V6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
-            <span class="tile-copy"><h2>Analizador de preguntas.</h2><p>Revisa claridad, foco y señales de razonamiento.</p><button id="question-analyzer-launch" class="tool-action" type="button">Analizar mi pregunta ↗</button></span>
+            <span class="bottom-icon" aria-hidden="true"><img src="assets/question-notebook.webp" width="56" height="56" alt="" decoding="async"></span>
+            <span class="tile-copy"><h2 id="question-tile-title">Analizador de preguntas.</h2><p id="question-tile-description">Revisa claridad, foco y señales de razonamiento.</p></span>
+            <button class="bottom-tile-trigger" id="question-analyzer-launch" type="button" aria-haspopup="dialog" aria-controls="question-analyzer-dialog" aria-labelledby="question-tile-title question-tile-description"></button>
           </article>
           <article class="card bottom-tile tool-launch">
-            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M14 3c-5.5 0-9 3.8-9 9.2 0 4.1 2.2 6 4.6 7.5.9.6 1.4 1.3 1.4 2.3h6c0-1 .5-1.7 1.4-2.3 2.4-1.5 4.6-3.4 4.6-7.5C23 6.8 19.5 3 14 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M11 25h6m-5-9-2-3 3-2 2 2 3-1" stroke="#b95434" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="tile-copy"><h2>Evalúa tu criterio.</h2><p>Reflexiona sobre evidencia, supuestos y perspectivas.</p><button id="criteria-evaluator-launch" class="tool-action" type="button">Hacer autoevaluación ↗</button></span>
+            <span class="bottom-icon" aria-hidden="true"><img src="assets/criteria-lamp.webp" width="56" height="56" alt="" decoding="async"></span>
+            <span class="tile-copy"><h2 id="criteria-tile-title">Evalúa tu criterio.</h2><p id="criteria-tile-description">Reflexiona sobre evidencia, supuestos y perspectivas.</p></span>
+            <button class="bottom-tile-trigger" id="criteria-evaluator-launch" type="button" aria-haspopup="dialog" aria-controls="criteria-evaluator-dialog" aria-labelledby="criteria-tile-title criteria-tile-description"></button>
           </article>
           <article class="card bottom-tile">
-            <span class="bottom-icon" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><circle cx="5" cy="21" r="2.3" fill="#b95434"/><circle cx="14" cy="7" r="2.3" fill="#87977c"/><circle cx="23" cy="18" r="2.3" fill="#18392d"/><path d="m6.5 19.3 6-10m3.4-.2 5.4 7.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="bottom-icon" aria-hidden="true"><img src="assets/thinking-brain.webp" width="56" height="56" alt="" decoding="async"></span>
             <span><h2>Pensar es un proceso.</h2><p>Pregunta, analiza y construye.</p></span>
           </article>
         </div>
+
+        <dialog id="argument-builder-dialog" class="tool-dialog" aria-labelledby="argument-dialog-title" aria-describedby="argument-dialog-description">
+          <header class="dialog-heading">
+            <div><p class="eyebrow">Afirmación · razón · evidencia</p><h2 id="argument-dialog-title">Construye un argumento</h2></div>
+            <button id="close-argument-builder" class="dialog-close" type="button" aria-label="Cerrar constructor de argumentos">×</button>
+          </header>
+          <p id="argument-dialog-description">Ordena tu idea en tres piezas. Puedes añadir una objeción o un límite para ponerla a prueba.</p>
+          <div class="argument-field"><label for="argument-statement">1. ¿Qué afirmas?</label><textarea id="argument-statement" placeholder="Creo que…"></textarea></div>
+          <div class="argument-field"><label for="argument-reason">2. ¿Cuál es tu razón principal?</label><textarea id="argument-reason" placeholder="Lo sostengo porque…"></textarea></div>
+          <div class="argument-field"><label for="argument-evidence">3. ¿Qué evidencia la respalda?</label><textarea id="argument-evidence" placeholder="Un dato, fuente, ejemplo o experiencia verificable…"></textarea></div>
+          <div class="argument-field"><label for="argument-objection">¿Qué objeción o límite deberías considerar? <span>(opcional)</span></label><textarea id="argument-objection" placeholder="Una posible objeción o algo que aún no sabes…"></textarea></div>
+          <button id="build-argument" class="dialog-primary" type="button">Organizar mi argumento</button>
+          <p id="argument-result" class="result-panel tool-result" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+          <p class="dialog-note">Se procesa solo en esta página. No se envía al tutor ni se guarda. Revisa si la evidencia realmente respalda tu afirmación.</p>
+        </dialog>
+
+        <dialog id="claim-semaphore-dialog" class="tool-dialog" aria-labelledby="claim-semaphore-title" aria-describedby="claim-semaphore-description">
+          <header class="dialog-heading">
+            <div><p class="eyebrow">Clasificación manual</p><h2 id="claim-semaphore-title">Semáforo de afirmaciones</h2></div>
+            <button id="close-claim-semaphore" class="dialog-close" type="button" aria-label="Cerrar semáforo de afirmaciones">×</button>
+          </header>
+          <p id="claim-semaphore-description">Escribe una afirmación y elige el color según la evidencia que encontraste. La herramienta no decide si es verdadera; puedes cambiar la categoría al revisar nuevas fuentes.</p>
+          <label for="claim-input">Afirmación que quieres revisar</label>
+          <textarea id="claim-input" placeholder="Por ejemplo: La asistencia aumentó después del cambio de horario."></textarea>
+          <fieldset class="claim-status-options">
+            <legend>¿Qué sabes por ahora?</legend>
+            <button id="claim-status-green" class="claim-status-button claim-status-green" type="button"><strong>Verde · contrastada con evidencia</strong><small>Encontré una fuente confiable y pertinente para respaldarla.</small></button>
+            <button id="claim-status-yellow" class="claim-status-button claim-status-yellow" type="button"><strong>Amarillo · falta verificar</strong><small>Necesito comprobar la fuente, el contexto o el alcance.</small></button>
+            <button id="claim-status-red" class="claim-status-button claim-status-red" type="button"><strong>Rojo · sin sustento o con evidencia en contra</strong><small>No la des por válida todavía; busca qué respaldo falta y contrasta.</small></button>
+          </fieldset>
+          <p id="claim-semaphore-result" class="result-panel tool-result" role="status" aria-live="polite" aria-atomic="true">Aún no hay afirmaciones en el tablero.</p>
+          <button id="reset-claim-board" class="board-reset" type="button">Limpiar tablero</button>
+          <p class="dialog-note">Cada color es una decisión tuya, no un veredicto automático. Rojo no demuestra por sí solo que algo sea falso. El tablero vive solo mientras esta página esté abierta.</p>
+        </dialog>
 
         <dialog id="question-analyzer-dialog" class="tool-dialog" aria-labelledby="question-dialog-title">
           <header class="dialog-heading">
@@ -593,13 +588,13 @@
                   <p id="file-list" class="file-list" aria-live="polite">Todavía no has añadido documentos.</p>
                   <button id="clear-files" class="clear-files" type="button" hidden>Quitar documentos</button>
                 </div>
-                <p class="document-note">El tutor no puede abrir ni leer el contenido de estos archivos, y no se cargan ni se envían. Al copiar el contexto solo incluirás sus nombres. Si quieres compartir una idea, pega aquí un resumen o fragmento.</p>
+              <p class="document-note">Esta página muestra los nombres para que los tengas a mano; no carga ni lee el contenido de los archivos. Al copiar contexto solo se copian los nombres. Tú decides si pegas después un resumen o fragmento en otro servicio.</p>
               </aside>
             </div>
 
             <div class="context-panel" aria-labelledby="context-title">
               <h3 id="context-title">Dale contexto a tu pregunta</h3>
-              <p>Edita el objetivo y añade las notas que quieras llevar al chat.</p>
+              <p>El objetivo, las notas y los nombres de archivo se preparan en esta página. No se envían mientras uses estas herramientas locales; copiar el contexto solo lo pone en el portapapeles para que tú decidas qué pegar y dónde. No adjunta archivos.</p>
 
               <div class="field-group">
                 <label class="field-label" for="objective">Mi objetivo</label>
@@ -625,57 +620,19 @@
       </section>
 
       <section id="datos" class="usage-strip" aria-labelledby="data-title">
-        <h2 id="data-title" class="sr-only">Sobre esta muestra</h2>
-        <p>El tutor se activa cuando eliges “Abrir el tutor”. Botpress procesa los mensajes de la conversación; usa ejemplos ficticios y evita incluir datos personales o sensibles.</p>
+        <h2 id="data-title" class="sr-only">Sobre el chat</h2>
+        <p>Prototipo académico sin chat habilitado. Si se aprueba el canal, los mensajes que decidas enviar se procesarán mediante Botpress y, cuando corresponda, búsqueda web. La conservación y el borrado de los servicios externos aún no están verificados; usa solo ejemplos ficticios.</p>
         <a class="footer-link" href="#inicio">Volver al inicio ↑</a>
       </section>
     </main>
 
     <script>
       (() => {
-// Candidate copied from the recovered bot's read-only Botpress Deploy Settings.
-const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/20261022204512-SPI9IIB0.js";
+// Deliberately left unconfigured until channel, origin, and audience approval is documented.
+const CONFIG_SCRIPT_URL = "REEMPLAZAR_URL_DE_CONFIGURACION_TRAS_APROBACION";
       const EXPECTED_BOT_ID = "b5ee6e0a-2956-4558-9f4c-0881ac4a1d61";
-      // Academic demo mode skips the institutional approval record; every Webchat load still waits for a trusted consent click.
-      const ACADEMIC_DEMO_MODE = true;
-      const TUTOR_BOT_CONFIGURATION = Object.freeze({ botName: "TutorIA", color: "#18392d" });
-      const TUTOR_BOT_SHADOW_STYLES = "\n      .bpWebchat.bpOpen {\n        position: fixed !important;\n        inset: 50% auto auto 50% !important;\n        width: min(440px, calc(100vw - 32px)) !important;\n        height: min(640px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: translate(-50%, -50%) !important;\n        z-index: 2147483000 !important;\n        transition: inset .24s ease, width .24s ease, height .24s ease, transform .24s ease !important;\n      }\n      .bpWebchat.bpOpen.tutor-docked {\n        inset: 24px 24px auto auto !important;\n        width: min(380px, calc(100vw - 48px)) !important;\n        height: min(560px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: none !important;\n      }\n      .bpWebchat.bpOpen ~ .bpFabWrapper { display: none !important; }\n      @media (prefers-reduced-motion: reduce) {\n        .bpWebchat.bpOpen { transition: none !important; }\n      }\n      @media (max-width: 760px) {\n        .bpWebchat.bpOpen {\n          width: calc(100vw - 24px) !important;\n          height: calc(100dvh - 24px) !important;\n          max-height: calc(100dvh - 24px) !important;\n        }\n      }\n";
-
-      function updateTutorChatDocking() {
-        const chat = document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat.bpOpen");
-        const preparation = document.getElementById("prepara");
-        const shouldDock = window.innerWidth > 1200 && preparation &&
-          preparation.getBoundingClientRect().top <= window.innerHeight * 0.95;
-        chat?.classList.toggle("tutor-docked", Boolean(shouldDock));
-        document.body.classList.toggle("chat-scrolled", Boolean(shouldDock));
-      }
-
-      function installTutorBotShadowStyles() {
-        return new Promise((resolve, reject) => {
-          const applyStyles = () => {
-            const shadowRoot = document.getElementById("fab-root")?.shadowRoot;
-            if (!shadowRoot) return false;
-            let style = shadowRoot.querySelector("#tutor-centered-chat-styles");
-            if (!style) {
-              style = document.createElement("style");
-              style.id = "tutor-centered-chat-styles";
-              style.textContent = TUTOR_BOT_SHADOW_STYLES;
-              shadowRoot.appendChild(style);
-            }
-            observer.disconnect();
-            clearTimeout(timeoutId);
-            resolve();
-            return true;
-          };
-          const observer = new MutationObserver(applyStyles);
-          observer.observe(document.documentElement, { childList: true, subtree: true });
-          const timeoutId = setTimeout(() => {
-            observer.disconnect();
-            reject(new Error("Botpress shadow root unavailable"));
-          }, 5000);
-          applyStyles();
-        });
-      }
+      // The real channel stays disabled until the exact deployment has documented approval.
+      const ACADEMIC_DEMO_MODE = false;
       const CHANNEL_APPROVAL = null;
       const INJECT_URL = "https://cdn.botpress.cloud/webchat/v3.7/inject.js";
       const LOAD_TIMEOUT_MS = 15000;
@@ -706,6 +663,59 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
         insightIndex = (insightIndex + 1) % insights.length;
         renderInsight();
       });
+      const insightCarousel = document.querySelector(".insight-carousel");
+      const insightToggle = document.getElementById("insight-toggle");
+      const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let insightTimer = null;
+      let insightManuallyPaused = false;
+      let insightPointerPaused = false;
+      let insightFocusPaused = false;
+      function updateInsightRotation() {
+        const shouldPause = insightManuallyPaused || insightPointerPaused || insightFocusPaused ||
+          document.hidden || reducedMotionQuery.matches;
+        if (shouldPause && insightTimer !== null) {
+          window.clearInterval(insightTimer);
+          insightTimer = null;
+        } else if (!shouldPause && insightTimer === null) {
+          insightTimer = window.setInterval(() => {
+            insightIndex = (insightIndex + 1) % insights.length;
+            renderInsight();
+          }, 7000);
+        }
+        const isPaused = insightManuallyPaused || reducedMotionQuery.matches;
+        insightToggle.textContent = isPaused ? "Reanudar" : "Pausar";
+        insightToggle.setAttribute("aria-label", isPaused ? "Reanudar rotación automática" : "Pausar rotación automática");
+        insightToggle.setAttribute("aria-pressed", String(insightManuallyPaused));
+      }
+      insightToggle.addEventListener("click", () => {
+        insightManuallyPaused = !insightManuallyPaused;
+        updateInsightRotation();
+      });
+      insightCarousel.addEventListener("pointerenter", () => {
+        insightPointerPaused = true;
+        updateInsightRotation();
+      });
+      insightCarousel.addEventListener("pointerleave", () => {
+        insightPointerPaused = false;
+        updateInsightRotation();
+      });
+      insightCarousel.addEventListener("focusin", () => {
+        insightFocusPaused = true;
+        updateInsightRotation();
+      });
+      insightCarousel.addEventListener("focusout", event => {
+        if (!insightCarousel.contains(event.relatedTarget)) {
+          insightFocusPaused = false;
+          updateInsightRotation();
+        }
+      });
+      document.addEventListener("visibilitychange", updateInsightRotation);
+      if (typeof reducedMotionQuery.addEventListener === "function") {
+        reducedMotionQuery.addEventListener("change", updateInsightRotation);
+      } else if (typeof reducedMotionQuery.addListener === "function") {
+        reducedMotionQuery.addListener(updateInsightRotation);
+      }
+      updateInsightRotation();
 
       const questionDialog = document.getElementById("question-analyzer-dialog");
       const questionInput = document.getElementById("question-input");
@@ -768,6 +778,78 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
             : "Empieza por buscar una razón o evidencia y pregúntate qué supuesto la sostiene.";
         criteriaResult.hidden = false;
         criteriaResult.textContent = `Has marcado ${checked} de 4 prácticas. ${guidance}`;
+      });
+
+      const argumentBuilderDialog = document.getElementById("argument-builder-dialog");
+      const argumentStatement = document.getElementById("argument-statement");
+      const argumentReason = document.getElementById("argument-reason");
+      const argumentEvidence = document.getElementById("argument-evidence");
+      const argumentObjection = document.getElementById("argument-objection");
+      const argumentResult = document.getElementById("argument-result");
+      document.getElementById("argument-builder-launch").addEventListener("click", () => {
+        argumentBuilderDialog.showModal();
+        argumentStatement.focus();
+      });
+      document.getElementById("close-argument-builder").addEventListener("click", () => argumentBuilderDialog.close());
+      document.getElementById("build-argument").addEventListener("click", () => {
+        const statement = argumentStatement.value.trim();
+        const reason = argumentReason.value.trim();
+        const evidence = argumentEvidence.value.trim();
+        if (!statement || !reason || !evidence) {
+          argumentResult.hidden = false;
+          argumentResult.textContent = "Completa tu afirmación, una razón y evidencia para organizar el argumento.";
+          return;
+        }
+        const objection = argumentObjection.value.trim();
+        argumentResult.hidden = false;
+        argumentResult.textContent = [
+          `Afirmación: ${statement}`,
+          `Razón: ${reason}`,
+          `Evidencia: ${evidence}`,
+          objection ? `Objeción o límite por revisar: ${objection}` : "Siguiente paso: busca una objeción o un límite para poner a prueba la idea."
+        ].join("\n");
+      });
+
+      const claimSemaphoreDialog = document.getElementById("claim-semaphore-dialog");
+      const claimInput = document.getElementById("claim-input");
+      const claimSemaphoreResult = document.getElementById("claim-semaphore-result");
+      const claimBoard = [];
+      const claimStatuses = {
+        green: { label: "Verde", guidance: "Revisa que la fuente sea confiable, vigente y pertinente." },
+        yellow: { label: "Amarillo", guidance: "Busca otra fuente y delimita el contexto o el alcance." },
+        red: { label: "Rojo", guidance: "No la presentes como hecho todavía; indaga qué respaldo falta y contrasta." }
+      };
+      function renderClaimBoard() {
+        if (!claimBoard.length) {
+          claimSemaphoreResult.textContent = "Aún no hay afirmaciones en el tablero.";
+          return;
+        }
+        claimSemaphoreResult.textContent = `${claimBoard.length} afirmaciones en el tablero\n\n${claimBoard.map((item, index) => `${index + 1}. ${item.status.label}: ${item.claim}\n   Próximo paso: ${item.status.guidance}`).join("\n\n")}`;
+      }
+      document.getElementById("claim-semaphore-launch").addEventListener("click", () => {
+        claimSemaphoreDialog.showModal();
+        claimInput.focus();
+      });
+      document.getElementById("close-claim-semaphore").addEventListener("click", () => claimSemaphoreDialog.close());
+      Object.entries(claimStatuses).forEach(([key, status]) => {
+        document.getElementById(`claim-status-${key}`).addEventListener("click", () => {
+          const claim = claimInput.value.trim();
+          if (!claim) {
+            claimSemaphoreResult.textContent = "Escribe primero una afirmación para clasificarla.";
+            claimInput.focus();
+            return;
+          }
+          claimBoard.push({ claim, status });
+          claimInput.value = "";
+          renderClaimBoard();
+          claimInput.focus();
+        });
+      });
+      document.getElementById("reset-claim-board").addEventListener("click", () => {
+        claimBoard.length = 0;
+        claimInput.value = "";
+        renderClaimBoard();
+        claimInput.focus();
       });
 
       const taskButtons = [...document.querySelectorAll(".task-option")];
@@ -841,7 +923,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       });
       refreshContextPreview();
 
-      const gate = document.getElementById("tutor-demo");
+      const gate = document.getElementById("consent-gate");
       const acceptButton = document.getElementById("accept");
       const declineButton = document.getElementById("decline");
       const status = document.getElementById("status");
@@ -889,14 +971,14 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       }
 
       function getConfigurationError() {
+        if (!ACADEMIC_DEMO_MODE && !hasVerifiedChannelApproval()) {
+          return "El chat está desactivado en este borrador: faltan aprobación documentada del canal, el origen y la audiencia. No se enviarán mensajes.";
+        }
         if (CONFIG_SCRIPT_URL.startsWith("REEMPLAZAR_")) {
-          return "Prototipo académico: falta configurar el canal Webchat de demostración.";
+          return "El chat está desactivado: falta configurar su canal después de aprobarlo.";
         }
         if (!isAllowedConfigScriptUrl(CONFIG_SCRIPT_URL)) {
           return "No se inició el chat: la URL de configuración debe usar HTTPS y pertenecer a files.bpcontent.cloud.";
-        }
-        if (!ACADEMIC_DEMO_MODE && !hasVerifiedChannelApproval()) {
-          return "No se puede iniciar el chat sin verificar el canal Webchat.";
         }
         return null;
       }
@@ -906,6 +988,9 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
         acceptButton.disabled = true;
         availability.hidden = false;
         availability.textContent = configurationError;
+      } else {
+        acceptButton.disabled = false;
+        availability.hidden = true;
       }
 
       function setStatus(message, isError = false) {
@@ -1141,7 +1226,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
 
         let unsubscribe;
         try {
-          unsubscribe = window.botpress.on("webchat:initialized", async () => {
+          unsubscribe = window.botpress.on("webchat:initialized", () => {
             if (!isCurrentAttempt(id) ||
               configScript !== script ||
               configScriptAttemptId !== id ||
@@ -1153,21 +1238,6 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
               return;
             }
             try {
-              if (typeof window.botpress.config !== "function") throw new Error("Botpress config API unavailable");
-              await installTutorBotShadowStyles();
-              if (!isCurrentAttempt(id) || configScript !== script || configScriptAttemptId !== id ||
-                !botpressInitGuard || botpressInitGuard.attemptId !== id || !botpressInitGuard.initInvoked) return;
-              window.botpress.config({ configuration: TUTOR_BOT_CONFIGURATION });
-              window.botpress.on("webchat:opened", () => {
-                document.body.classList.add("chat-focused");
-                window.addEventListener("scroll", updateTutorChatDocking, { passive: true });
-                updateTutorChatDocking();
-              });
-              window.botpress.on("webchat:closed", () => {
-                window.removeEventListener("scroll", updateTutorChatDocking);
-                document.body.classList.remove("chat-focused", "chat-scrolled");
-                document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat")?.classList.remove("tutor-docked");
-              });
               window.botpress.open();
             } catch {
               failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
@@ -1306,7 +1376,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
           abandonInjector(injectorScriptId);
         }
         injectorMissingApi = false;
-        setStatus("El chat sigue cerrado. Puedes abrirlo cuando quieras.");
+        setStatus("No se inició el chat. Puedes seguir con las herramientas locales de esta página.");
       }
 
       acceptButton.addEventListener("click", loadBotpressAfterAcceptance);
