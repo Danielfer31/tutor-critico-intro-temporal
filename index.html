@@ -363,6 +363,66 @@
         *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
         .card:hover, .task-option:hover, .task-option:focus-visible, .tip-card:hover, .copy-context:hover, .insight-control:hover, .dialog-primary:hover { transform: none !important; }
       }
+      body.chat-focused .top-grid {
+        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
+        gap: clamp(18px, 2vw, 24px);
+        transition: grid-template-columns .32s ease, gap .32s ease;
+      }
+      body.chat-focused #explora,
+      body.chat-focused .side-stack { min-height: min(650px, calc(100dvh - 96px)); }
+      body.chat-focused #explora { transform: translateX(-8px); }
+      body.chat-focused .side-stack { gap: 18px; transform: translateX(8px); }
+      body.chat-focused .side-tile { min-height: 0; }
+      body.chat-focused .launch-card { visibility: hidden; pointer-events: none; }
+      body.chat-focused .bottom-grid {
+        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
+        gap: clamp(18px, 2vw, 24px);
+      }
+      body.chat-focused .bottom-tile:nth-child(2) { visibility: hidden; }
+      body.chat-scrolled .top-grid {
+        margin-right: 420px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        transition: grid-template-columns .32s ease, margin-right .32s ease;
+      }
+      body.chat-scrolled .launch-card { display: none; }
+      body.chat-scrolled .bottom-grid {
+        margin-right: 420px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        transition: margin-right .32s ease;
+      }
+      body.chat-scrolled .bottom-tile:nth-child(2) { visibility: visible; }
+      body.chat-scrolled #prepara,
+      body.chat-scrolled #datos { margin-right: 420px; transition: margin-right .32s ease; }
+      body.chat-scrolled #prepara .prep-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 12px 20px;
+      }
+      body.chat-scrolled #prepara .prep-heading-main { grid-column: 1; grid-row: 1 / span 2; }
+      body.chat-scrolled #prepara .prep-summary-copy { grid-column: 2; grid-row: 1; }
+      body.chat-scrolled #prepara .prep-toggle { grid-column: 2; grid-row: 2; justify-self: end; }
+      @media (max-width: 1080px) {
+        body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        body.chat-focused .launch-card { display: none; }
+        body.chat-focused .bottom-grid { display: none; }
+        body.chat-focused #explora,
+        body.chat-focused .side-stack { min-height: 380px; transform: none; }
+      }
+      @media (max-width: 760px) {
+        body.chat-focused .top-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+        body.chat-focused #explora,
+        body.chat-focused .side-stack { min-height: auto; }
+        body.chat-focused .side-stack { grid-template-rows: auto auto; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body.chat-focused .top-grid,
+        body.chat-focused .card,
+        body.chat-scrolled .top-grid,
+        body.chat-scrolled .bottom-grid,
+        body.chat-scrolled #prepara,
+        body.chat-scrolled #datos { transition: none; }
+      }
     </style>
   </head>
   <body>
@@ -638,6 +698,75 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       const LOAD_TIMEOUT_MS = 15000;
       const SUBSCRIPTION_CLEANUP_MAX_ATTEMPTS = 3;
       const SUBSCRIPTION_CLEANUP_RETRY_DELAY_MS = 1000;
+      const TUTOR_BOT_CONFIGURATION = Object.freeze({ botName: "TutorIA", color: "#18392d" });
+      const TUTOR_BOT_SHADOW_STYLES = `
+        .bpWebchat.bpOpen {
+          position: fixed !important;
+          inset: 50% auto auto 50% !important;
+          width: min(440px, calc(100vw - 32px)) !important;
+          height: min(640px, calc(100dvh - 48px)) !important;
+          max-height: calc(100dvh - 48px) !important;
+          transform: translate(-50%, -50%) !important;
+          z-index: 2147483000 !important;
+          transition: inset .24s ease, width .24s ease, height .24s ease, transform .24s ease !important;
+        }
+        .bpWebchat.bpOpen.tutor-docked {
+          inset: 24px 24px auto auto !important;
+          width: min(380px, calc(100vw - 48px)) !important;
+          height: min(560px, calc(100dvh - 48px)) !important;
+          max-height: calc(100dvh - 48px) !important;
+          transform: none !important;
+        }
+        .bpWebchat.bpOpen ~ .bpFabWrapper { display: none !important; }
+        @media (prefers-reduced-motion: reduce) {
+          .bpWebchat.bpOpen { transition: none !important; }
+        }
+        @media (max-width: 760px) {
+          .bpWebchat.bpOpen {
+            width: calc(100vw - 24px) !important;
+            height: calc(100dvh - 24px) !important;
+            max-height: calc(100dvh - 24px) !important;
+          }
+        }
+      `;
+
+      function updateTutorChatDocking() {
+        const chat = document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat.bpOpen");
+        const preparation = document.getElementById("prepara");
+        const shouldDock = window.innerWidth > 1200 && preparation &&
+          preparation.getBoundingClientRect().top <= window.innerHeight * 0.95;
+        chat?.classList.toggle("tutor-docked", Boolean(shouldDock));
+        document.body.classList.toggle("chat-scrolled", Boolean(shouldDock));
+      }
+
+      function installTutorBotShadowStyles() {
+        return new Promise((resolve, reject) => {
+          let observer;
+          const timeoutId = setTimeout(() => {
+            observer?.disconnect();
+            reject(new Error("Botpress shadow root unavailable"));
+          }, 5000);
+          const applyStyles = () => {
+            const shadowRoot = document.getElementById("fab-root")?.shadowRoot;
+            if (!shadowRoot) return false;
+            let style = shadowRoot.querySelector("#tutor-centered-chat-styles");
+            if (!style) {
+              style = document.createElement("style");
+              style.id = "tutor-centered-chat-styles";
+              style.textContent = TUTOR_BOT_SHADOW_STYLES;
+              shadowRoot.appendChild(style);
+            }
+            observer?.disconnect();
+            clearTimeout(timeoutId);
+            resolve();
+            return true;
+          };
+          observer = new MutationObserver(applyStyles);
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+          applyStyles();
+        });
+      }
+
 
       const insights = [
         { kind: "Frase para pensar", text: "Una pregunta abre caminos." },
@@ -1226,7 +1355,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
 
         let unsubscribe;
         try {
-          unsubscribe = window.botpress.on("webchat:initialized", () => {
+          unsubscribe = window.botpress.on("webchat:initialized", async () => {
             if (!isCurrentAttempt(id) ||
               configScript !== script ||
               configScriptAttemptId !== id ||
@@ -1238,6 +1367,23 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
               return;
             }
             try {
+              if (typeof window.botpress.config !== "function") throw new Error("Botpress config API unavailable");
+              await installTutorBotShadowStyles();
+              if (!isCurrentAttempt(id) || configScript !== script || configScriptAttemptId !== id ||
+                !botpressInitGuard || botpressInitGuard.attemptId !== id || !botpressInitGuard.initInvoked) return;
+              window.botpress.config({ configuration: TUTOR_BOT_CONFIGURATION });
+              window.botpress.on("webchat:opened", () => {
+                document.body.classList.add("chat-focused");
+                window.addEventListener("scroll", updateTutorChatDocking, { passive: true });
+                window.addEventListener("resize", updateTutorChatDocking);
+                updateTutorChatDocking();
+              });
+              window.botpress.on("webchat:closed", () => {
+                window.removeEventListener("scroll", updateTutorChatDocking);
+                window.removeEventListener("resize", updateTutorChatDocking);
+                document.body.classList.remove("chat-focused", "chat-scrolled");
+                document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat")?.classList.remove("tutor-docked");
+              });
               window.botpress.open();
             } catch {
               failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
