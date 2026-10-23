@@ -371,6 +371,15 @@
         margin-right: 420px;
         transition: margin-right .32s ease;
       }
+      body.chat-scrolled #prepara .prep-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 12px 20px;
+      }
+      body.chat-scrolled #prepara .prep-heading-main { grid-column: 1; grid-row: 1 / span 2; }
+      body.chat-scrolled #prepara .prep-summary-copy { grid-column: 2; grid-row: 1; }
+      body.chat-scrolled #prepara .prep-toggle { grid-column: 2; grid-row: 2; justify-self: end; }
       @media (max-width: 980px) {
         body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         body.chat-focused .launch-card { display: none; }
