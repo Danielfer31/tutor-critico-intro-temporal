@@ -354,6 +354,23 @@
         gap: clamp(18px, 2vw, 24px);
       }
       body.chat-focused .bottom-tile:nth-child(2) { visibility: hidden; }
+      body.chat-scrolled .top-grid {
+        margin-right: 420px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        transition: grid-template-columns .32s ease, margin-right .32s ease;
+      }
+      body.chat-scrolled .launch-card { display: none; }
+      body.chat-scrolled .bottom-grid {
+        margin-right: 420px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        transition: margin-right .32s ease;
+      }
+      body.chat-scrolled .bottom-tile:nth-child(2) { visibility: visible; }
+      body.chat-scrolled #prepara,
+      body.chat-scrolled #datos {
+        margin-right: 420px;
+        transition: margin-right .32s ease;
+      }
       @media (max-width: 980px) {
         body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         body.chat-focused .launch-card { display: none; }
@@ -369,7 +386,11 @@
       }
       @media (prefers-reduced-motion: reduce) {
         body.chat-focused .top-grid,
-        body.chat-focused .card { transition: none; }
+        body.chat-focused .card,
+        body.chat-scrolled .top-grid,
+        body.chat-scrolled .bottom-grid,
+        body.chat-scrolled #prepara,
+        body.chat-scrolled #datos { transition: none; }
       }
 </style>
   </head>
@@ -609,7 +630,16 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       // Academic demo mode skips the institutional approval record; every Webchat load still waits for a trusted consent click.
       const ACADEMIC_DEMO_MODE = true;
       const TUTOR_BOT_CONFIGURATION = Object.freeze({ botName: "TutorIA", color: "#18392d" });
-      const TUTOR_BOT_SHADOW_STYLES = "\n      .bpWebchat.bpOpen {\n        position: fixed !important;\n        inset: 50% auto auto 50% !important;\n        width: min(440px, calc(100vw - 32px)) !important;\n        height: min(640px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: translate(-50%, -50%) !important;\n        z-index: 2147483000 !important;\n      }\n      .bpWebchat.bpOpen ~ .bpFabWrapper { display: none !important; }\n      @media (max-width: 760px) {\n        .bpWebchat.bpOpen {\n          width: calc(100vw - 24px) !important;\n          height: calc(100dvh - 24px) !important;\n          max-height: calc(100dvh - 24px) !important;\n        }\n      }\n";
+      const TUTOR_BOT_SHADOW_STYLES = "\n      .bpWebchat.bpOpen {\n        position: fixed !important;\n        inset: 50% auto auto 50% !important;\n        width: min(440px, calc(100vw - 32px)) !important;\n        height: min(640px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: translate(-50%, -50%) !important;\n        z-index: 2147483000 !important;\n        transition: inset .24s ease, width .24s ease, height .24s ease, transform .24s ease !important;\n      }\n      .bpWebchat.bpOpen.tutor-docked {\n        inset: 24px 24px auto auto !important;\n        width: min(380px, calc(100vw - 48px)) !important;\n        height: min(560px, calc(100dvh - 48px)) !important;\n        max-height: calc(100dvh - 48px) !important;\n        transform: none !important;\n      }\n      .bpWebchat.bpOpen ~ .bpFabWrapper { display: none !important; }\n      @media (prefers-reduced-motion: reduce) {\n        .bpWebchat.bpOpen { transition: none !important; }\n      }\n      @media (max-width: 760px) {\n        .bpWebchat.bpOpen {\n          width: calc(100vw - 24px) !important;\n          height: calc(100dvh - 24px) !important;\n          max-height: calc(100dvh - 24px) !important;\n        }\n      }\n";
+
+      function updateTutorChatDocking() {
+        const chat = document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat.bpOpen");
+        const preparation = document.getElementById("prepara");
+        const shouldDock = window.innerWidth > 1200 && preparation &&
+          preparation.getBoundingClientRect().top <= window.innerHeight * 0.55;
+        chat?.classList.toggle("tutor-docked", Boolean(shouldDock));
+        document.body.classList.toggle("chat-scrolled", Boolean(shouldDock));
+      }
 
       function installTutorBotShadowStyles() {
         return new Promise((resolve, reject) => {
@@ -1119,8 +1149,16 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
               if (!isCurrentAttempt(id) || configScript !== script || configScriptAttemptId !== id ||
                 !botpressInitGuard || botpressInitGuard.attemptId !== id || !botpressInitGuard.initInvoked) return;
               window.botpress.config({ configuration: TUTOR_BOT_CONFIGURATION });
-              window.botpress.on("webchat:opened", () => document.body.classList.add("chat-focused"));
-              window.botpress.on("webchat:closed", () => document.body.classList.remove("chat-focused"));
+              window.botpress.on("webchat:opened", () => {
+                document.body.classList.add("chat-focused");
+                window.addEventListener("scroll", updateTutorChatDocking, { passive: true });
+                updateTutorChatDocking();
+              });
+              window.botpress.on("webchat:closed", () => {
+                window.removeEventListener("scroll", updateTutorChatDocking);
+                document.body.classList.remove("chat-focused", "chat-scrolled");
+                document.getElementById("fab-root")?.shadowRoot?.querySelector(".bpWebchat")?.classList.remove("tutor-docked");
+              });
               window.botpress.open();
             } catch {
               failStartup(id, "No se pudo iniciar el chat. Puedes intentarlo de nuevo o salir.");
