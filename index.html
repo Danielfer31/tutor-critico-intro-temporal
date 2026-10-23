@@ -603,7 +603,7 @@ const CONFIG_SCRIPT_URL = "https://files.bpcontent.cloud/2026/10/22/20/202610222
       function installTutorBotShadowStyles() {
         const shadowRoot = document.getElementById("fab-root")?.shadowRoot;
         if (!shadowRoot) throw new Error("Botpress shadow root unavailable");
-        let style = shadowRoot.getElementById("tutor-centered-chat-styles");
+        let style = shadowRoot.querySelector("#tutor-centered-chat-styles");
         if (!style) {
           style = document.createElement("style");
           style.id = "tutor-centered-chat-styles";
