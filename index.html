@@ -346,9 +346,15 @@
       body.chat-focused .side-stack { gap: 18px; transform: translateX(8px); }
       body.chat-focused .side-tile { min-height: 0; }
       body.chat-focused .launch-card { visibility: hidden; pointer-events: none; }
+      body.chat-focused .bottom-grid {
+        grid-template-columns: minmax(220px, 1fr) minmax(400px, 440px) minmax(220px, 1fr);
+        gap: clamp(18px, 2vw, 24px);
+      }
+      body.chat-focused .bottom-tile:nth-child(2) { visibility: hidden; }
       @media (max-width: 980px) {
         body.chat-focused .top-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         body.chat-focused .launch-card { display: none; }
+        body.chat-focused .bottom-grid { display: none; }
         body.chat-focused #explora,
         body.chat-focused .side-stack { min-height: 380px; transform: none; }
       }
